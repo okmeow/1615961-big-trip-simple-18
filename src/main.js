@@ -2,8 +2,8 @@ import FiltersView from './view/filters-view.js';
 import SortView from './view/sort-view.js';
 import ContentContainerView from './view/content-container-view.js';
 import tripParametersView from './view/new-trip-parameters-view.js';
-import createAddOffersTemplate from './view/trip-offers-view.js';
-import DestinationView from './view/destination-view.js';
+import tripAddOptionsView from './view/trip-offers-view.js';
+import tripDestinationView from './view/destination-view.js';
 import {render} from './render.js';
 
 const siteFiltersMainElement = document.querySelector('.trip-main__trip-controls');
@@ -15,6 +15,7 @@ render(new SortView(), siteSortElement);
 render(new ContentContainerView(), siteSortElement);
 
 const siteFormElement = document.querySelector('.event--edit');
+
 render(new tripParametersView(), siteFormElement);
-render(new createAddOffersTemplate(), siteFormElement);
-render(new DestinationView(), siteFormElement);
+render(new tripAddOptionsView(), siteFormElement);
+render(new tripDestinationView(), siteFormElement);
