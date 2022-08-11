@@ -3,14 +3,14 @@ import tripDestinationPointView from './../view/destination-point.js';
 import ContentContainerView from './../view/content-container-view.js';
 
 export default class BoardPresenter {
-  boardComponent = new ContentContainerView();
+  fieldComponent = new ContentContainerView();
 
-  init = (boardContainer) => {
-    this.boardContainer = boardContainer;
+  init = (fieldContainer) => {
+    this.fieldContainer = fieldContainer;
 
     for (let i = 0; i < 3; i++) {
-      render(this.boardComponent, this.boardContainer);
-      render(new tripDestinationPointView(), this.boardComponent.getElement());
+      render(this.fieldComponent, this.fieldContainer);
+      render(new tripDestinationPointView(), this.fieldComponent.getElement());
     }
   };
 }
