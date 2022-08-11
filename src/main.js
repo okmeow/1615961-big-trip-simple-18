@@ -4,11 +4,13 @@ import ContentContainerView from './view/content-container-view.js';
 import tripParametersView from './view/new-trip-parameters-view.js';
 import tripAddOptionsView from './view/trip-offers-view.js';
 import tripDestinationView from './view/destination-view.js';
+import BoardPresenter from './presenter/board-presenter.js';
 import {render} from './render.js';
 
 const siteFiltersMainElement = document.querySelector('.trip-main__trip-controls');
 const siteFilterElement = siteFiltersMainElement.querySelector('.trip-controls__filters');
 const siteSortElement = document.querySelector('.trip-events');
+const boardPresenter = new BoardPresenter();
 
 render(new FiltersView(), siteFilterElement);
 render(new SortView(), siteSortElement);
@@ -19,3 +21,6 @@ const siteFormElement = document.querySelector('.event--edit');
 render(new tripParametersView(), siteFormElement);
 render(new tripAddOptionsView(), siteFormElement);
 render(new tripDestinationView(), siteFormElement);
+
+const siteDestinationPointContainerElement = document.querySelector('.trip-events__list');
+boardPresenter.init(siteDestinationPointContainerElement);
