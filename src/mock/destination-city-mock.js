@@ -1,6 +1,8 @@
 import {getRandomInteger} from './utils.js';
 import {CitiesToTrip, CitiesDescription} from './const.js';
 
+
+// Функции для объекта назначение (Описывает город)
 const generateRandomCity = () => {
 
   const randomIndex = getRandomInteger(0, CitiesToTrip.length - 1);
@@ -16,7 +18,7 @@ const generateRandomCityDescription = () => {
 };
 
 export const generateCity = () => ({
-  id: 1,
+  id: 0,
   description: generateRandomCityDescription(),
   name: generateRandomCity(),
   pictures: [
@@ -26,3 +28,6 @@ export const generateCity = () => ({
     }
   ]
 });
+
+// Функции для объекта точки трипа (Описывает точку маршрута)
+

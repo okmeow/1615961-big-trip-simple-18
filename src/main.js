@@ -6,13 +6,13 @@ import TripAddOptionsView from './view/trip-offers-view.js';
 import TripDestinationView from './view/destination-view.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import {render} from './render.js';
-import TripModel from './model/destinations-model.js';
+import CityModel from './model/destinations-model.js';
 
 const siteFiltersMainElement = document.querySelector('.trip-main__trip-controls');
 const siteFilterElement = siteFiltersMainElement.querySelector('.trip-controls__filters');
 const siteSortElement = document.querySelector('.trip-events');
 const boardPresenter = new BoardPresenter();
-const destinationsModel = new TripModel();
+const destinationCitiesModel = new CityModel();
 
 render(new FiltersView(), siteFilterElement);
 render(new SortView(), siteSortElement);
@@ -25,4 +25,4 @@ render(new TripAddOptionsView(), siteFormElement);
 render(new TripDestinationView(), siteFormElement);
 
 const siteDestinationPointContainerElement = document.querySelector('.trip-events__list');
-boardPresenter.init(siteDestinationPointContainerElement, destinationsModel);
+boardPresenter.init(siteDestinationPointContainerElement, destinationCitiesModel);

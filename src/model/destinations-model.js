@@ -1,6 +1,6 @@
-import {generateCity} from '../mock/trip.js';
+import {generateCity} from '../mock/destination-city-mock.js';
 
-export default class TripModel {
+export default class CityModel {
   cities = Array.from({length: 3}, generateCity);
 
   getCities = () => this.cities;
