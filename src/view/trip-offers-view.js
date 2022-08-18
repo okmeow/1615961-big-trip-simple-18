@@ -55,7 +55,7 @@ const createAddOptionsTemplate = () => (
   </section>`
 );
 
-export default class tripAddOptionsView {
+export default class TripAddOptionsView {
   getTemplate() {
     return createAddOptionsTemplate();
   }

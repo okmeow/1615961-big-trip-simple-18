@@ -5,8 +5,10 @@ import ContentContainerView from './../view/content-container-view.js';
 export default class BoardPresenter {
   fieldComponent = new ContentContainerView();
 
-  init = (fieldContainer) => {
+  init = (fieldContainer, destinationsModel) => {
     this.fieldContainer = fieldContainer;
+    this.destinationsModel = destinationsModel;
+    this.destinationCities = [...this.destinationsModel.getCities()];
 
     for (let i = 0; i < 3; i++) {
       render(this.fieldComponent, this.fieldContainer);

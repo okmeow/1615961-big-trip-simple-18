@@ -33,7 +33,7 @@ const createDestinationPointTemplate = () => (
   </li>`
 );
 
-export default class tripDestinationPointView {
+export default class TripDestinationPointView {
   getTemplate() {
     return createDestinationPointTemplate();
   }

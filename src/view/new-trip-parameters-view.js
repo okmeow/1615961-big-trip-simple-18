@@ -95,7 +95,7 @@ const createTripParametersTemplate = () => (
 );
 
 
-export default class tripParametersView {
+export default class TripParametersView {
   getTemplate() {
     return createTripParametersTemplate();
   }

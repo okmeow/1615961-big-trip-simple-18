@@ -19,7 +19,7 @@ const createDestinationTemplate = () => (
   </section>`
 );
 
-export default class tripDestinationView {
+export default class TripDestinationView {
   getTemplate() {
     return createDestinationTemplate();
   }
