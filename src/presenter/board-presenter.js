@@ -13,8 +13,8 @@ export default class BoardPresenter {
     this.destinationCitiesModel = destinationCitiesModel;
     this.destinationCities = [...this.destinationCitiesModel.getCities()];
 
-    render(new TripDestinationView(this.destinationCities), this.fieldComponent.getElement());
-    console.log(this.destinationCities);
+    render(new TripDestinationView(this.destinationCities[0]), this.fieldComponent.getElement());
+    console.log(this.destinationCities[0]);
 
     for (let i = 0; i < 3; i++) {
       render(this.fieldComponent, this.fieldContainer);

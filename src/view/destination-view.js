@@ -1,12 +1,13 @@
 import {createElement} from '../render.js';
 
-const createDestinationTemplate = () => {
-  // const {description, name} = destination;
+const createDestinationTemplate = (destination) => {
+  const {description, name} = destination;
+
   return (
     `<section class="event__details">
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">123</p>
+        <p class="event__destination-description">${description}</p>
 
         <div class="event__photos-container">
           <div class="event__photos-tape">
@@ -23,7 +24,7 @@ const createDestinationTemplate = () => {
 };
 
 export default class TripDestinationView {
-  constructor (destination) {
+  constructor(destination) {
     this.destination = destination;
   }
 
