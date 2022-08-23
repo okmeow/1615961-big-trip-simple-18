@@ -4,6 +4,7 @@ import ContentContainerView from './../view/content-container-view.js';
 import WrapperContentContainerView from './../view/wrapper-content-container-view.js';
 import WrapperFormContentContainerView from './../view/wrapper-form-content-container-view.js';
 import TripDestinationView from './../view/destination-view.js';
+import TripDestinationWrapperView from './../view/wrapper-destination-view.js';
 import TripAddOptionsView from './../view/trip-offers-view.js';
 import TripParametersView from './../view/new-trip-parameters-view.js';
 
@@ -12,6 +13,7 @@ export default class AppPresenter {
   #tripListComponent = new ContentContainerView();
   #tripItemComponent = new WrapperContentContainerView();
   #tripItemFormComponent = new WrapperFormContentContainerView();
+  #tripDestinationWrapperComponent = new TripDestinationWrapperView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
@@ -31,8 +33,9 @@ export default class AppPresenter {
     render(this.#tripItemComponent, this.#tripListComponent.element);
     render(this.#tripItemFormComponent, this.#tripItemComponent.element);
     render(new TripParametersView(), this.#tripItemFormComponent.element);
-    render(new TripAddOptionsView(), this.#tripItemFormComponent.element);
-    render(new TripDestinationView(this.#destinationCities[0]), this.#tripItemFormComponent.element);
+    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
+    render(new TripAddOptionsView(), this.#tripDestinationWrapperComponent.element);
+    render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
 
     for (let i = 0; i < 3; i++) {
       render(this.#tripListComponent, this.#fieldContainer);
