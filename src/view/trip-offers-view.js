@@ -56,19 +56,21 @@ const createAddOptionsTemplate = () => (
 );
 
 export default class TripAddOptionsView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createAddOptionsTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

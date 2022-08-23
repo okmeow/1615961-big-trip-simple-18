@@ -24,23 +24,26 @@ const createDestinationTemplate = (destination) => {
 };
 
 export default class TripDestinationView {
+  #element = null;
+  #destination = null;
+
   constructor(destination) {
-    this.destination = destination;
+    this.#destination = destination;
   }
 
-  getTemplate() {
-    return createDestinationTemplate(this.destination);
+  get template() {
+    return createDestinationTemplate(this.#destination);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

@@ -6,7 +6,7 @@ const createDestinationPointTemplate = (point) => {
 
   const date = dueDate !== null
     ? humanizeTaskDueDate(dueDate)
-    : 'sd';
+    : '';
 
   return (
     `<li class="trip-events__item">
@@ -43,23 +43,26 @@ const createDestinationPointTemplate = (point) => {
 };
 
 export default class TripDestinationPointView {
+  #element = null;
+  #point = null;
+
   constructor(point) {
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createDestinationPointTemplate(this.point);
+  get template() {
+    return createDestinationPointTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
