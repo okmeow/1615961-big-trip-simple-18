@@ -1,16 +1,16 @@
 import {createElement} from '../render.js';
 
-const createContentContainerTemplate = () => (
-  `<ul class="trip-events__list">
-  </ul>`
+const createWrapperFormContentContainerTemplate = () => (
+  `<form class="event event--edit" action="#" method="post">
+  </form>`
 );
 
 
-export default class ContentContainerView {
+export default class WrapperFormContentContainerView {
   #element = null;
 
   get template() {
-    return createContentContainerTemplate();
+    return createWrapperFormContentContainerTemplate();
   }
 
   get element() {
