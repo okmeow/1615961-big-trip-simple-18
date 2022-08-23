@@ -10,7 +10,7 @@ import TripParametersView from './../view/new-trip-parameters-view.js';
 
 
 export default class AppPresenter {
-  #tripListComponent = new ContentContainerView();
+  #tripContentContainerComponent = new ContentContainerView();
   #tripItemComponent = new WrapperContentContainerView();
   #tripItemFormComponent = new WrapperFormContentContainerView();
   #tripDestinationWrapperComponent = new TripDestinationWrapperView();
@@ -29,8 +29,8 @@ export default class AppPresenter {
     this.#transportTypeModel = transportTypeModel;
     this.#transportType = [...this.#transportTypeModel.transportType];
 
-    render(this.#tripListComponent, this.#fieldContainer);
-    render(this.#tripItemComponent, this.#tripListComponent.element);
+    render(this.#tripContentContainerComponent, this.#fieldContainer);
+    render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
     render(this.#tripItemFormComponent, this.#tripItemComponent.element);
     render(new TripParametersView(), this.#tripItemFormComponent.element);
     render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
@@ -38,8 +38,8 @@ export default class AppPresenter {
     render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
 
     for (let i = 0; i < 3; i++) {
-      render(this.#tripListComponent, this.#fieldContainer);
-      render(new tripDestinationPointView(this.#transportType[0]), this.#tripListComponent.element);
+      render(this.#tripContentContainerComponent, this.#fieldContainer);
+      render(new tripDestinationPointView(this.#transportType[0]), this.#tripContentContainerComponent.element);
     }
   };
 }
