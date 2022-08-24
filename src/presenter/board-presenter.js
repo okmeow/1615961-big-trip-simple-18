@@ -1,5 +1,5 @@
 import {render} from '../render.js';
-import tripDestinationPointView from '../view/destination-point-view.js';
+import TripDestinationPointView from '../view/destination-point-view.js';
 import ContentContainerView from './../view/content-container-view.js';
 import WrapperContentContainerView from './../view/wrapper-content-container-view.js';
 import WrapperFormContentContainerView from './../view/wrapper-form-content-container-view.js';
@@ -37,9 +37,14 @@ export default class AppPresenter {
     render(new TripAddOptionsView(), this.#tripDestinationWrapperComponent.element);
     render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
 
-    for (let i = 0; i < 3; i++) {
-      render(this.#tripContentContainerComponent, this.#fieldContainer);
-      render(new tripDestinationPointView(this.#transportType[0]), this.#tripContentContainerComponent.element);
+    for (let i = 0; i < this.#transportType.length; i++) {
+      this.#renderPoint(this.#transportType[i]);
     }
+  };
+
+  #renderPoint = (point) => {
+    const pointComponent = new TripDestinationPointView(point);
+
+    render(pointComponent, this.#tripContentContainerComponent.element);
   };
 }
