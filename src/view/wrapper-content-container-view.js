@@ -1,16 +1,17 @@
 import {createElement} from '../render.js';
 
-const createContentContainerTemplate = () => (
-  `<ul class="trip-events__list">
-  </ul>`
+const createWrapperContentContainerTemplate = () => (
+  `<li class="trip-events__item">
+
+  </li>`
 );
 
 
-export default class ContentContainerView {
+export default class WrapperContentContainerView {
   #element = null;
 
   get template() {
-    return createContentContainerTemplate();
+    return createWrapperContentContainerTemplate();
   }
 
   get element() {
