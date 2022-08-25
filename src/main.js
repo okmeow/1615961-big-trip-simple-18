@@ -1,5 +1,4 @@
 import FiltersView from './view/filters-view.js';
-import SortView from './view/sort-view.js';
 import ContentContainerView from './view/content-container-view.js';
 import AppPresenter from './presenter/board-presenter.js';
 import {render} from './render.js';
@@ -14,7 +13,6 @@ const destinationCitiesModel = new CityModel();
 const transportTypeModel = new TransportTypeModel();
 
 render(new FiltersView(), siteFilterElement);
-render(new SortView(), siteTripEventsElement);
 render(new ContentContainerView(), siteTripEventsElement);
 
 appPresenter.init(siteTripEventsElement, destinationCitiesModel, transportTypeModel);
