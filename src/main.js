@@ -8,11 +8,11 @@ import TransportTypeModel from './model/transport-type-model.js';
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteTripEventsElement = document.querySelector('.trip-events');
 
-const appPresenter = new AppPresenter();
 const destinationCitiesModel = new CityModel();
 const transportTypeModel = new TransportTypeModel();
+const appPresenter = new AppPresenter(siteTripEventsElement, destinationCitiesModel, transportTypeModel);
 
 render(new FiltersView(), siteFilterElement);
 render(new ContentContainerView(), siteTripEventsElement);
 
-appPresenter.init(siteTripEventsElement, destinationCitiesModel, transportTypeModel);
+appPresenter.init();

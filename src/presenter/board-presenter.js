@@ -25,13 +25,20 @@ export default class AppPresenter {
   #destinationCities = [];
   #transportType = [];
 
-  init = (fieldContainer, destinationCitiesModel, transportTypeModel) => {
+  constructor (fieldContainer, destinationCitiesModel, transportTypeModel) {
     this.#fieldContainer = fieldContainer;
-    this.#destinationCitiesModel = destinationCitiesModel;
-    this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#transportTypeModel = transportTypeModel;
+    this.#destinationCitiesModel = destinationCitiesModel;
+  }
+
+  init = () => {
+    this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#transportType = [...this.#transportTypeModel.transportType];
 
+    this.#renderAppContent();
+  };
+
+  #renderAppContent = () => {
     render(this.#tripContentContainerComponent, this.#fieldContainer);
 
     if(this.#destinationCities.length === 0) {
