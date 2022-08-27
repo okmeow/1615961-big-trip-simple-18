@@ -8,13 +8,15 @@ import TripDestinationView from './../view/destination-view.js';
 import TripDestinationWrapperView from './../view/wrapper-destination-view.js';
 import TripAddOptionsView from './../view/trip-offers-view.js';
 import TripParametersView from './../view/new-trip-parameters-view.js';
-
+import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
+import SortView from './../view/sort-view.js';
 
 export default class AppPresenter {
   #tripContentContainerComponent = new ContentContainerView();
   #tripItemComponent = new WrapperContentContainerView();
   #tripItemFormComponent = new WrapperFormContentContainerView();
   #tripDestinationWrapperComponent = new TripDestinationWrapperView();
+  #emptyPointListMessageComponent = new EmptyPointListMessageView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
@@ -23,23 +25,36 @@ export default class AppPresenter {
   #destinationCities = [];
   #transportType = [];
 
-  init = (fieldContainer, destinationCitiesModel, transportTypeModel) => {
+  constructor (fieldContainer, destinationCitiesModel, transportTypeModel) {
     this.#fieldContainer = fieldContainer;
-    this.#destinationCitiesModel = destinationCitiesModel;
-    this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#transportTypeModel = transportTypeModel;
+    this.#destinationCitiesModel = destinationCitiesModel;
+  }
+
+  init = () => {
+    this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#transportType = [...this.#transportTypeModel.transportType];
 
-    render(this.#tripContentContainerComponent, this.#fieldContainer);
-    render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
-    render(this.#tripItemFormComponent, this.#tripItemComponent.element);
-    render(new TripParametersView(), this.#tripItemFormComponent.element);
-    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
-    render(new TripAddOptionsView(), this.#tripDestinationWrapperComponent.element);
-    render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
+    this.#renderAppContent();
+  };
 
-    for (let i = 0; i < this.#transportType.length; i++) {
-      this.#renderPoint(this.#transportType[i]);
+  #renderAppContent = () => {
+    render(this.#tripContentContainerComponent, this.#fieldContainer);
+
+    if(this.#destinationCities.length === 0) {
+      render(this.#emptyPointListMessageComponent, this.#tripContentContainerComponent.element);
+    } else {
+      render(new SortView(), this.#tripContentContainerComponent.element);
+      render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
+      render(this.#tripItemFormComponent, this.#tripItemComponent.element);
+      render(new TripParametersView(), this.#tripItemFormComponent.element);
+      render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
+      render(new TripAddOptionsView(), this.#tripDestinationWrapperComponent.element);
+      render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
+
+      for (let i = 0; i < this.#transportType.length; i++) {
+        this.#renderPoint(this.#transportType[i]);
+      }
     }
   };
 
