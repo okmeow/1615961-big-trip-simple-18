@@ -83,7 +83,7 @@ export default class AppPresenter {
       document.addEventListener('keydown', onEscapeKeyDown);
     });
 
-    pointEditComponent.element.querySelector('.event--edit').addEventListener('submit', () => {
+    pointEditComponent.setEditFormSubmitHandler(() => {
       replaceEditPointToPoint();
       document.removeEventListener('keydown', onEscapeKeyDown);
     });

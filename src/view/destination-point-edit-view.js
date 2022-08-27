@@ -188,4 +188,14 @@ export default class TripDestinationPointEditView extends AbstractView {
     evt.preventDefault();
     this._callback.click();
   };
+
+  setEditFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  };
 }
