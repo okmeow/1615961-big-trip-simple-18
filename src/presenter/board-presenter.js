@@ -78,7 +78,7 @@ export default class AppPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.setShowEditFormButtonClickHandler(() => {
       replacePointToEditPoint();
       document.addEventListener('keydown', onEscapeKeyDown);
     });
@@ -88,7 +88,7 @@ export default class AppPresenter {
       document.removeEventListener('keydown', onEscapeKeyDown);
     });
 
-    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointEditComponent.setCloseEditFormButtonClickHandler(() => {
       replaceEditPointToPoint();
       document.removeEventListener('keydown', onEscapeKeyDown);
     });
