@@ -1,4 +1,4 @@
-import {getRandomInteger} from './utils.js';
+import {getRandomInteger} from '../utils/utils.js';
 import {PointTypes} from './const.js';
 
 // Функции для типа трансопрта

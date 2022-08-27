@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeTaskDueDate} from '../mock/utils';
+import {humanizeTaskDueDate} from '../utils/utils.js';
 
 const createDestinationPointTemplate = (point) => {
   const {type, dueDate} = point;
