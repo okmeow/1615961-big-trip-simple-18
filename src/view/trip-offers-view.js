@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createAddOptionsTemplate = () => (
   `<section class="event__section  event__section--offers">
@@ -53,22 +53,8 @@ const createAddOptionsTemplate = () => (
   </section>`
 );
 
-export default class TripAddOptionsView {
-  #element = null;
-
+export default class TripAddOptionsView extends AbstractView {
   get template() {
     return createAddOptionsTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
