@@ -1,12 +1,12 @@
-import {createElement} from '../render.js';
-import {humanizeTaskDueDate} from '../mock/utils';
+import AbstractView from '../framework/view/abstract-view.js';
+// import {humanizeTaskDueDate} from '../mock/utils';
 
 const createDestinationPointEditTemplate = (point) => {
-  const {type, dueDate} = point;
+  const {type} = point;
 
-  const date = dueDate !== null
-    ? humanizeTaskDueDate(dueDate)
-    : '';
+  // const date = dueDate !== null
+  // ? humanizeTaskDueDate(dueDate)
+  // : '';
 
   return (
     `<li class="trip-events__item">
@@ -73,7 +73,7 @@ const createDestinationPointEditTemplate = (point) => {
 
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              Flight
+              ${type}
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
             <datalist id="destination-list-1">
@@ -167,27 +167,15 @@ const createDestinationPointEditTemplate = (point) => {
   );
 };
 
-export default class TripDestinationPointEditView {
-  #element = null;
+export default class TripDestinationPointEditView extends AbstractView {
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
   }
 
   get template() {
     return createDestinationPointEditTemplate(this.#point);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

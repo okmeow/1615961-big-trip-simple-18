@@ -1,4 +1,4 @@
-import {render} from '../render.js';
+import {render} from '../framework/render.js';
 import TripDestinationPointView from '../view/destination-point-view.js';
 import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
 import ContentContainerView from './../view/content-container-view.js';

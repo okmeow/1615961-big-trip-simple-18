@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeTaskDueDate} from '../mock/utils';
 
 const createDestinationPointTemplate = (point) => {
@@ -42,27 +42,15 @@ const createDestinationPointTemplate = (point) => {
   );
 };
 
-export default class TripDestinationPointView {
-  #element = null;
+export default class TripDestinationPointView extends AbstractView{
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
   }
 
   get template() {
     return createDestinationPointTemplate(this.#point);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
