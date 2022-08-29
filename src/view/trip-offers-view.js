@@ -53,7 +53,7 @@ const createAddOptionsTemplate = () => (
   </section>`
 );
 
-export default class TripAddOptionsView extends AbstractView {
+export default class TripOffersView extends AbstractView {
   get template() {
     return createAddOptionsTemplate();
   }

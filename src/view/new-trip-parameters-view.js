@@ -94,8 +94,7 @@ const createTripParametersTemplate = () => (
   </header>`
 );
 
-
-export default class TripParametersView extends AbstractView{
+export default class newTripFormView extends AbstractView{
   get template() {
     return createTripParametersTemplate();
   }

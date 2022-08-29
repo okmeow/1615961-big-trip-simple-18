@@ -6,8 +6,8 @@ import WrapperContentContainerView from './../view/wrapper-content-container-vie
 import WrapperFormContentContainerView from './../view/wrapper-form-content-container-view.js';
 import TripDestinationView from './../view/destination-view.js';
 import TripDestinationWrapperView from './../view/wrapper-destination-view.js';
-import TripAddOptionsView from './../view/trip-offers-view.js';
-import TripParametersView from './../view/new-trip-parameters-view.js';
+import TripOffersView from './../view/trip-offers-view.js';
+import newTripFormView from './../view/new-trip-parameters-view.js';
 import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
 import SortView from './../view/sort-view.js';
 
@@ -35,27 +35,42 @@ export default class AppPresenter {
     this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#transportType = [...this.#transportTypeModel.transportType];
 
-    this.#renderAppContent();
+    this.#renderContent();
   };
 
-  #renderAppContent = () => {
+  #renderAboutDestination = () => {
+    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
+    this.#renderOffers();
+    this.#renderDestinationDescription();
+  };
+
+  #renderOffers = () => {
+    render(new TripOffersView(), this.#tripDestinationWrapperComponent.element);
+  };
+
+  #renderDestinationDescription = () => {
+    render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
+  };
+
+  #renderNewTripForm = () => {
+    render(new newTripFormView(), this.#tripItemFormComponent.element);
+  };
+
+  #renderAboutDestinationWrapper = () => {
+    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
+  };
+
+  #renderTripParametersWrapper = () => {
+    render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
+    render(this.#tripItemFormComponent, this.#tripItemComponent.element);
+  };
+
+  #renderCommonWrapper = () => {
     render(this.#tripContentContainerComponent, this.#fieldContainer);
+  };
 
-    if(this.#destinationCities.length === 0) {
-      render(this.#emptyPointListMessageComponent, this.#tripContentContainerComponent.element);
-    } else {
-      render(new SortView(), this.#tripContentContainerComponent.element);
-      render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
-      render(this.#tripItemFormComponent, this.#tripItemComponent.element);
-      render(new TripParametersView(), this.#tripItemFormComponent.element);
-      render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
-      render(new TripAddOptionsView(), this.#tripDestinationWrapperComponent.element);
-      render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
-
-      for (let i = 0; i < this.#transportType.length; i++) {
-        this.#renderPoint(this.#transportType[i]);
-      }
-    }
+  #renderSort = () => {
+    render(new SortView(), this.#tripContentContainerComponent.element);
   };
 
   #renderPoint = (point) => {
@@ -94,5 +109,29 @@ export default class AppPresenter {
     });
 
     render(pointComponent, this.#tripContentContainerComponent.element);
+  };
+
+  #renderPoints = () => {
+    for (let i = 0; i < this.#transportType.length; i++) {
+      this.#renderPoint(this.#transportType[i]);
+    }
+  };
+
+  #renderNoPointsMessage = () => {
+    render(this.#emptyPointListMessageComponent, this.#tripContentContainerComponent.element);
+  };
+
+  #renderContent = () => {
+    this.#renderCommonWrapper();
+
+    if(this.#destinationCities.length === 0) {
+      return this.#renderNoPointsMessage();
+    }
+    this.#renderSort();
+    this.#renderAboutDestinationWrapper();
+    this.#renderTripParametersWrapper();
+    this.#renderNewTripForm();
+    this.#renderAboutDestination();
+    this.#renderPoints();
   };
 }
