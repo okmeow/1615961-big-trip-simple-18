@@ -1,4 +1,4 @@
-import {render} from '../render.js';
+import {render, replace} from '../framework/render.js';
 import TripDestinationPointView from '../view/destination-point-view.js';
 import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
 import ContentContainerView from './../view/content-container-view.js';
@@ -63,11 +63,11 @@ export default class AppPresenter {
     const pointEditComponent = new TripDestinationPointEditView(point);
 
     const replacePointToEditPoint = () => {
-      this.#tripContentContainerComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
+      replace(pointEditComponent, pointComponent);
     };
 
     const replaceEditPointToPoint = () => {
-      this.#tripContentContainerComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
+      replace(pointComponent, pointEditComponent);
     };
 
     const onEscapeKeyDown = (evt) => {
@@ -78,17 +78,17 @@ export default class AppPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.setShowEditFormButtonClickHandler(() => {
       replacePointToEditPoint();
       document.addEventListener('keydown', onEscapeKeyDown);
     });
 
-    pointEditComponent.element.querySelector('.event--edit').addEventListener('submit', () => {
+    pointEditComponent.setEditFormSubmitHandler(() => {
       replaceEditPointToPoint();
       document.removeEventListener('keydown', onEscapeKeyDown);
     });
 
-    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointEditComponent.setCloseEditFormButtonClickHandler(() => {
       replaceEditPointToPoint();
       document.removeEventListener('keydown', onEscapeKeyDown);
     });

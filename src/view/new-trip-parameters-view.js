@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createTripParametersTemplate = () => (
   `<header class="event__header">
@@ -95,22 +95,8 @@ const createTripParametersTemplate = () => (
 );
 
 
-export default class TripParametersView {
-  #element = null;
-
+export default class TripParametersView extends AbstractView{
   get template() {
     return createTripParametersTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
-import {humanizeTaskDueDate} from '../mock/utils';
+import AbstractView from '../framework/view/abstract-view.js';
+import {humanizeTaskDueDate} from '../utils/utils.js';
 
 const createDestinationPointTemplate = (point) => {
   const {type, dueDate} = point;
@@ -42,11 +42,11 @@ const createDestinationPointTemplate = (point) => {
   );
 };
 
-export default class TripDestinationPointView {
-  #element = null;
+export default class TripDestinationPointView extends AbstractView{
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
   }
 
@@ -54,15 +54,13 @@ export default class TripDestinationPointView {
     return createDestinationPointTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  setShowEditFormButtonClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+  };
 }
