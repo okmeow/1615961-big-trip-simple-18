@@ -179,23 +179,23 @@ export default class TripDestinationPointEditView extends AbstractView {
     return createDestinationPointEditTemplate(this.#point);
   }
 
-  setCloseEditFormButtonClickHandler = (callback) => {
-    this._callback.click = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
-  };
-
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
   };
 
-  setEditFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
-  };
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit();
+  };
+
+  setCloseEditFormButtonClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  setEditFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 }
