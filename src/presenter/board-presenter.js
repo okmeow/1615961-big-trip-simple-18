@@ -1,6 +1,4 @@
-import {render, replace} from '../framework/render.js';
-import TripDestinationPointView from '../view/destination-point-view.js';
-import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
+import {render} from '../framework/render.js';
 import ContentContainerView from './../view/content-container-view.js';
 import WrapperContentContainerView from './../view/wrapper-content-container-view.js';
 import WrapperFormContentContainerView from './../view/wrapper-form-content-container-view.js';
@@ -10,6 +8,7 @@ import TripOffersView from './../view/trip-offers-view.js';
 import newTripFormView from './../view/new-trip-parameters-view.js';
 import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
 import SortView from './../view/sort-view.js';
+import PointPresenter from './point-presenter.js';
 
 export default class AppPresenter {
   #tripContentContainerComponent = new ContentContainerView();
@@ -74,41 +73,8 @@ export default class AppPresenter {
   };
 
   #renderPoint = (point) => {
-    const pointComponent = new TripDestinationPointView(point);
-    const pointEditComponent = new TripDestinationPointEditView(point);
-
-    const replacePointToEditPoint = () => {
-      replace(pointEditComponent, pointComponent);
-    };
-
-    const replaceEditPointToPoint = () => {
-      replace(pointComponent, pointEditComponent);
-    };
-
-    const onEscapeKeyDown = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceEditPointToPoint();
-        document.removeEventListener('keydown', onEscapeKeyDown);
-      }
-    };
-
-    pointComponent.setShowEditFormButtonClickHandler(() => {
-      replacePointToEditPoint();
-      document.addEventListener('keydown', onEscapeKeyDown);
-    });
-
-    pointEditComponent.setEditFormSubmitHandler(() => {
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', onEscapeKeyDown);
-    });
-
-    pointEditComponent.setCloseEditFormButtonClickHandler(() => {
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', onEscapeKeyDown);
-    });
-
-    render(pointComponent, this.#tripContentContainerComponent.element);
+    const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element);
+    pointPresenter.init(point);
   };
 
   #renderPoints = () => {
