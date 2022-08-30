@@ -23,6 +23,7 @@ export default class AppPresenter {
 
   #destinationCities = [];
   #transportType = [];
+  #pointPresenter = new Map();
 
   constructor (fieldContainer, destinationCitiesModel, transportTypeModel) {
     this.#fieldContainer = fieldContainer;
@@ -75,9 +76,15 @@ export default class AppPresenter {
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element);
     pointPresenter.init(point);
+    this.#pointPresenter.set(point.id, pointPresenter);
   };
 
-  #renderPoints = () => {
+  #clearPointList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+  };
+
+  #renderPointList = () => {
     for (let i = 0; i < this.#transportType.length; i++) {
       this.#renderPoint(this.#transportType[i]);
     }
@@ -98,6 +105,6 @@ export default class AppPresenter {
     this.#renderTripParametersWrapper();
     this.#renderNewTripForm();
     this.#renderAboutDestination();
-    this.#renderPoints();
+    this.#renderPointList();
   };
 }
