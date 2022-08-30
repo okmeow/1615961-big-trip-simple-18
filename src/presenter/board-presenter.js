@@ -74,13 +74,17 @@ export default class AppPresenter {
     render(new SortView(), this.#tripContentContainerComponent.element);
   };
 
+  #handleModeChange = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.resetView());
+  };
+
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element);
+    const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element, this.#handlePointChange, this.#handleModeChange);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
