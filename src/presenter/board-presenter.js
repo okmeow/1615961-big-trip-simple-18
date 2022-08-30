@@ -20,21 +20,21 @@ export default class AppPresenter {
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
-  #transportTypeModel = null;
+  #tripPointsModel = null;
 
   #destinationCities = [];
-  #transportType = [];
+  #tripPoints = [];
   #pointPresenter = new Map();
 
-  constructor (fieldContainer, destinationCitiesModel, transportTypeModel) {
+  constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
     this.#fieldContainer = fieldContainer;
-    this.#transportTypeModel = transportTypeModel;
+    this.#tripPointsModel = tripPointsModel;
     this.#destinationCitiesModel = destinationCitiesModel;
   }
 
   init = () => {
     this.#destinationCities = [...this.#destinationCitiesModel.cities];
-    this.#transportType = [...this.#transportTypeModel.transportType];
+    this.#tripPoints = [...this.#tripPointsModel.tripPoints];
 
     this.#renderContent();
   };
@@ -75,7 +75,7 @@ export default class AppPresenter {
   };
 
   #handlePointChange = (updatedPoint) => {
-    this.#transportType = updateItem(this.#transportType, updatedPoint);
+    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
@@ -91,8 +91,8 @@ export default class AppPresenter {
   };
 
   #renderPointList = () => {
-    for (let i = 0; i < this.#transportType.length; i++) {
-      this.#renderPoint(this.#transportType[i]);
+    for (let i = 0; i < this.#tripPoints.length; i++) {
+      this.#renderPoint(this.#tripPoints[i]);
     }
   };
 
