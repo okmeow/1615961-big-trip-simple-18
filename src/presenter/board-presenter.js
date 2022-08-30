@@ -9,6 +9,7 @@ import newTripFormView from './../view/new-trip-parameters-view.js';
 import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
 import SortView from './../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
+import {updateItem} from '../utils/utils.js';
 
 export default class AppPresenter {
   #tripContentContainerComponent = new ContentContainerView();
@@ -71,6 +72,11 @@ export default class AppPresenter {
 
   #renderSort = () => {
     render(new SortView(), this.#tripContentContainerComponent.element);
+  };
+
+  #handlePointChange = (updatedPoint) => {
+    this.#transportType = updateItem(this.#transportType, updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
   #renderPoint = (point) => {
