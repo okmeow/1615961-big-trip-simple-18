@@ -2,7 +2,7 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeTaskDueDate} from '../utils/utils.js';
 
 const createDestinationPointTemplate = (point) => {
-  const {type, dueDate} = point;
+  const {type, dueDate, price} = point;
 
   const date = dueDate !== null
     ? humanizeTaskDueDate(dueDate)
@@ -24,7 +24,7 @@ const createDestinationPointTemplate = (point) => {
           </p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">20</span>
+          &euro;&nbsp;<span class="event__price-value">${price}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
