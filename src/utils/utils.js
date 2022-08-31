@@ -49,4 +49,6 @@ const sortPointDateUp = (pointA, pointB) => {
   return weight ?? dayjs(pointA.dueDate).diff(dayjs(pointB.dueDate));
 };
 
-export {getRandomInteger, getRandomValue, humanizeTaskDueDate, updateItem, sortPointDateUp};
+const sortPointPriceDown = (pointA, pointB) => pointB.price - pointA.price;
+
+export {getRandomInteger, getRandomValue, humanizeTaskDueDate, updateItem, sortPointDateUp, sortPointPriceDown};

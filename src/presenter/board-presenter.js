@@ -9,7 +9,7 @@ import newTripFormView from './../view/new-trip-parameters-view.js';
 import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
 import SortView from './../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateItem, sortPointDateUp} from '../utils/utils.js';
+import {updateItem, sortPointDateUp, sortPointPriceDown} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -87,9 +87,9 @@ export default class AppPresenter {
       case SortType.DATE:
         this.#tripPoints.sort(sortPointDateUp);
         break;
-      // case SortType.DATE_DOWN:
-      //   this.#tripPoints.sort(sortTaskDown);
-      //   break;
+      case SortType.PRICE:
+        this.#tripPoints.sort(sortPointPriceDown);
+        break;
       default:
         // 3. А когда пользователь захочет "вернуть всё, как было",
         // мы просто запишем в _boardTasks исходный массив
@@ -105,8 +105,8 @@ export default class AppPresenter {
     }
 
     this.#sortPoints(sortType);
-    // - Очищаем список
-    // - Рендерим список заново
+    this.#clearPointList();
+    this.#renderPointList();
   };
 
   #renderSort = () => {
