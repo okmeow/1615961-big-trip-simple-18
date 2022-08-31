@@ -9,7 +9,8 @@ import newTripFormView from './../view/new-trip-parameters-view.js';
 import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
 import SortView from './../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateItem} from '../utils/utils.js';
+import {updateItem, sortPointDateUp} from '../utils/utils.js';
+import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
   #tripContentContainerComponent = new ContentContainerView();
@@ -26,6 +27,8 @@ export default class AppPresenter {
   #destinationCities = [];
   #tripPoints = [];
   #pointPresenter = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedTripPoints = [];
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
     this.#fieldContainer = fieldContainer;
@@ -36,6 +39,11 @@ export default class AppPresenter {
   init = () => {
     this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
+
+    // 1. В отличии от сортировки по любому параметру,
+    // исходный порядок можно сохранить только одним способом -
+    // сохранив исходный массив:
+    this.#sourcedTripPoints = [...this.#tripPointsModel.tripPoints];
 
     this.#renderContent();
   };
@@ -71,8 +79,32 @@ export default class AppPresenter {
     render(this.#tripContentContainerComponent, this.#fieldContainer);
   };
 
+  #sortPoints = (sortType) => {
+    // 2. Этот исходный массив задач необходим,
+    // потому что для сортировки мы будем мутировать
+    // массив в свойстве _boardTasks
+    switch (sortType) {
+      case SortType.DATE:
+        this.#tripPoints.sort(sortPointDateUp);
+        break;
+      // case SortType.DATE_DOWN:
+      //   this.#tripPoints.sort(sortTaskDown);
+      //   break;
+      default:
+        // 3. А когда пользователь захочет "вернуть всё, как было",
+        // мы просто запишем в _boardTasks исходный массив
+        this.#tripPoints = [...this.#sourcedTripPoints];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
   #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
     // - Очищаем список
     // - Рендерим список заново
   };
@@ -88,6 +120,7 @@ export default class AppPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
