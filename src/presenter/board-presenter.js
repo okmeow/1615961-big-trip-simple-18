@@ -40,10 +40,7 @@ export default class AppPresenter {
     this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
 
-    // 1. В отличии от сортировки по любому параметру,
-    // исходный порядок можно сохранить только одним способом -
-    // сохранив исходный массив:
-    this.#sourcedTripPoints = [...this.#tripPointsModel.tripPoints];
+    this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
     this.#renderContent();
   };
@@ -80,9 +77,6 @@ export default class AppPresenter {
   };
 
   #sortPoints = (sortType) => {
-    // 2. Этот исходный массив задач необходим,
-    // потому что для сортировки мы будем мутировать
-    // массив в свойстве _boardTasks
     switch (sortType) {
       case SortType.DATE:
         this.#tripPoints.sort(sortPointDateUp);
@@ -91,8 +85,6 @@ export default class AppPresenter {
         this.#tripPoints.sort(sortPointPriceDown);
         break;
       default:
-        // 3. А когда пользователь захочет "вернуть всё, как было",
-        // мы просто запишем в _boardTasks исходный массив
         this.#tripPoints = [...this.#sourcedTripPoints];
     }
 
