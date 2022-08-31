@@ -9,13 +9,13 @@ const createSortTemplate = () => (
     </div>
 
     <div class="trip-sort__item  trip-sort__item--event">
-      <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event">
-      <label class="trip-sort__btn" for="sort-event">Event</label>
+      <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" disabled>
+      <label class="trip-sort__btn trip-sort__btn--disabled" for="sort-event">Event</label>
     </div>
 
     <div class="trip-sort__item  trip-sort__item--time">
-      <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-      <label class="trip-sort__btn" for="sort-time">Time</label>
+      <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" disabled>
+      <label class="trip-sort__btn trip-sort__btn--disabled" for="sort-time">Time</label>
     </div>
 
     <div class="trip-sort__item  trip-sort__item--price">
@@ -25,7 +25,7 @@ const createSortTemplate = () => (
 
     <div class="trip-sort__item  trip-sort__item--offer">
       <input id="sort-offer" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-offer" disabled>
-      <label class="trip-sort__btn" for="sort-offer">Offers</label>
+      <label class="trip-sort__btn trip-sort__btn--disabled" for="sort-offer">Offers</label>
     </div>
   </form>`
 );
@@ -41,7 +41,7 @@ export default class SortView extends AbstractView {
   };
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'LABEL') {
+    if (evt.target.tagName !== 'LABEL' || evt.target.classList.contains('trip-sort__btn--disabled')) {
       return;
     }
 
