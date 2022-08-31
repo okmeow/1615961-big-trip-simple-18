@@ -17,6 +17,7 @@ export default class AppPresenter {
   #tripItemFormComponent = new WrapperFormContentContainerView();
   #tripDestinationWrapperComponent = new TripDestinationWrapperView();
   #emptyPointListMessageComponent = new EmptyPointListMessageView();
+  #sortComponent = new SortView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
@@ -70,8 +71,15 @@ export default class AppPresenter {
     render(this.#tripContentContainerComponent, this.#fieldContainer);
   };
 
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
   #renderSort = () => {
-    render(new SortView(), this.#tripContentContainerComponent.element);
+    render(this.#sortComponent, this.#tripContentContainerComponent.element);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #handleModeChange = () => {
