@@ -13,4 +13,42 @@ const getRandomValue = (items) => (
 
 const humanizeTaskDueDate = (dueDate) => dayjs(dueDate).format('D MMMM YY');
 
-export {getRandomInteger, getRandomValue, humanizeTaskDueDate};
+const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1),
+  ];
+};
+
+const getWeightForNullDate = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+
+  return null;
+};
+
+const sortPointDateUp = (pointA, pointB) => {
+  const weight = getWeightForNullDate(pointA.dueDate, pointB.dueDate);
+
+  return weight ?? dayjs(pointA.dueDate).diff(dayjs(pointB.dueDate));
+};
+
+const sortPointPriceDown = (pointA, pointB) => pointB.price - pointA.price;
+
+export {getRandomInteger, getRandomValue, humanizeTaskDueDate, updateItem, sortPointDateUp, sortPointPriceDown};

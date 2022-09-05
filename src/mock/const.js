@@ -12,4 +12,10 @@ const CitiesDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing el
 
 const idArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-export {CitiesDescription, CitiesToTrip, PointTypes, idArray};
+const SortType = {
+  DEFAULT: 'default',
+  PRICE: 'price',
+  DATE: 'date',
+};
+
+export {CitiesDescription, CitiesToTrip, PointTypes, idArray, SortType};
