@@ -1,4 +1,5 @@
 import {render, replace, remove} from '../framework/render.js';
+import {isEscapeKey} from '../utils/utils.js';
 import TripDestinationPointView from '../view/destination-point-view.js';
 import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
 
@@ -78,7 +79,7 @@ export default class PointPresenter {
   };
 
   #escapeKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.#replaceEditPointToPoint();
     }

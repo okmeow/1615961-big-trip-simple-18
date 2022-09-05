@@ -1,15 +1,15 @@
 import {render} from '../framework/render.js';
-import ContentContainerView from './../view/content-container-view.js';
-import WrapperContentContainerView from './../view/wrapper-content-container-view.js';
-import WrapperFormContentContainerView from './../view/wrapper-form-content-container-view.js';
-import TripDestinationView from './../view/destination-view.js';
-import TripDestinationWrapperView from './../view/wrapper-destination-view.js';
-import TripOffersView from './../view/trip-offers-view.js';
-import newTripFormView from './../view/new-trip-parameters-view.js';
-import EmptyPointListMessageView from './../view/empty-point-list-message-view.js';
-import SortView from './../view/sort-view.js';
+import ContentContainerView from '../view/content-container-view.js';
+import WrapperContentContainerView from '../view/wrapper-content-container-view.js';
+import WrapperFormContentContainerView from '../view/wrapper-form-content-container-view.js';
+import TripDestinationView from '../view/destination-view.js';
+import TripDestinationWrapperView from '../view/wrapper-destination-view.js';
+import TripOffersView from '../view/trip-offers-view.js';
+import newTripFormView from '../view/new-trip-parameters-view.js';
+import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
+import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateItem, sortPointDateUp, sortPointPriceDown} from '../utils/utils.js';
+import {updateArrayElement, sortPointDateUp, sortPointPriceDown} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -111,8 +111,8 @@ export default class AppPresenter {
   };
 
   #handlePointChange = (updatedPoint) => {
-    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
-    this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
+    this.#tripPoints = updateArrayElement(this.#tripPoints, updatedPoint);
+    this.#sourcedTripPoints = updateArrayElement(this.#sourcedTripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
