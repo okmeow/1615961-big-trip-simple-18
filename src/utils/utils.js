@@ -13,7 +13,7 @@ const getRandomValue = (items) => (
 
 const humanizeTaskDueDate = (dueDate) => dayjs(dueDate).format('D MMMM YY');
 
-const updateItem = (items, update) => {
+const updateArrayElement = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
 
   if (index === -1) {
@@ -51,4 +51,6 @@ const sortPointDateUp = (pointA, pointB) => {
 
 const sortPointPriceDown = (pointA, pointB) => pointB.price - pointA.price;
 
-export {getRandomInteger, getRandomValue, humanizeTaskDueDate, updateItem, sortPointDateUp, sortPointPriceDown};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomValue, humanizeTaskDueDate, updateArrayElement, sortPointDateUp, sortPointPriceDown, isEscapeKey};

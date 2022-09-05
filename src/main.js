@@ -1,6 +1,6 @@
 import FiltersView from './view/filters-view.js';
 import ContentContainerView from './view/content-container-view.js';
-import AppPresenter from './presenter/board-presenter.js';
+import AppPresenter from './presenter/app-presenter.js';
 import {render} from './framework/render.js';
 import CityModel from './model/destinations-model.js';
 import TransportTypeModel from './model/transport-type-model.js';
