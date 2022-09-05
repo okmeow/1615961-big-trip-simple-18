@@ -1,12 +1,12 @@
-import AbstractView from '../framework/view/abstract-view.js';
-// import {humanizeTaskDueDate} from '../mock/utils';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+// import {humanizeTaskDueDate} from '../utils/utils.js';
 
 const createDestinationPointEditTemplate = (point) => {
   const {type} = point;
 
   // const date = dueDate !== null
-  // ? humanizeTaskDueDate(dueDate)
-  // : '';
+  //   ? humanizeTaskDueDate(dueDate)
+  //   : '';
 
   return (
     `<li class="trip-events__item">
@@ -167,16 +167,16 @@ const createDestinationPointEditTemplate = (point) => {
   );
 };
 
-export default class TripDestinationPointEditView extends AbstractView {
-  #point = null;
+export default class TripDestinationPointEditView extends AbstractStatefulView {
+
 
   constructor(point) {
     super();
-    this.#point = point;
+    this._state = TripDestinationPointEditView.parsePointToState(point);
   }
 
   get template() {
-    return createDestinationPointEditTemplate(this.#point);
+    return createDestinationPointEditTemplate(this._state);
   }
 
   #clickHandler = (evt) => {
@@ -186,7 +186,7 @@ export default class TripDestinationPointEditView extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(TripDestinationPointEditView.parsePointToTask(this._state));
   };
 
   setCloseEditFormButtonClickHandler = (callback) => {
@@ -197,5 +197,22 @@ export default class TripDestinationPointEditView extends AbstractView {
   setEditFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  static parsePointToState = (point) => ({...point,
+    // Сюда закинуть то, что нужно в состоянии
+    // isDueDate: point.dueDate !== null,
+  });
+
+  static parseStateToPoint = (state) => {
+    const point = {...state};
+
+    // if (!point.isDueDate) {
+    //   point.dueDate = null;
+    // }
+
+    // delete point.isDueDate;
+
+    return point;
   };
 }
