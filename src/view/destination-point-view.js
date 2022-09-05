@@ -1,12 +1,15 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeTaskDueDate} from '../utils/utils.js';
+import {humanizeTaskDueDate, humanizePointTime} from '../utils/utils.js';
 
 const createDestinationPointTemplate = (point) => {
-  const {type, dueDate, price} = point;
+  const {type, tripDate, price, destination, dateFrom, dateTo} = point;
 
-  const date = dueDate !== null
-    ? humanizeTaskDueDate(dueDate)
+  const date = tripDate !== null
+    ? humanizeTaskDueDate(tripDate)
     : '';
+
+  const timeFrom = dateFrom ? humanizePointTime(dateFrom) : '';
+  const timeTo = dateTo ? humanizePointTime(dateTo) : '';
 
   return (
     `<li class="trip-events__item">
@@ -15,12 +18,12 @@ const createDestinationPointTemplate = (point) => {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} Amsterdam</h3>
+        <h3 class="event__title">${type} ${destination}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+            <time class="event__start-time" datetime="2019-03-18T10:30">${timeFrom}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+            <time class="event__end-time" datetime="2019-03-18T11:00">${timeTo}</time>
           </p>
         </div>
         <p class="event__price">

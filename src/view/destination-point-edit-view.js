@@ -1,12 +1,32 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-// import {humanizeTaskDueDate} from '../utils/utils.js';
+import {humanizeEditPointTime} from '../utils/utils.js';
 
 const createDestinationPointEditTemplate = (point) => {
-  const {type} = point;
+  const {type, price, destination, dateFrom, dateTo, offers} = point;
 
-  // const date = dueDate !== null
-  //   ? humanizeTaskDueDate(dueDate)
-  //   : '';
+  const timeFrom = dateFrom !== null
+    ? humanizeEditPointTime(dateFrom)
+    : '';
+
+  const timeTo = dateTo !== null
+    ? humanizeEditPointTime(dateTo)
+    : '';
+
+  // const pointTypeOffer = offers
+  //   .find((offer) => offer.type === point.type);
+
+  const offerElement =
+    `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage">
+      <label class="event__offer-label" for="event-offer-luggage-1">
+        <span class="event__offer-title">${offers[0].title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offers[0].price}</span>
+      </label>
+    </div>`;
+
+  // pointTypeOffer.offers
+  //   .map((offer) => `${offerElement}`);
 
   return (
     `<li class="trip-events__item">
@@ -75,7 +95,7 @@ const createDestinationPointEditTemplate = (point) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
             <datalist id="destination-list-1">
               <option value="Amsterdam"></option>
               <option value="Geneva"></option>
@@ -85,10 +105,10 @@ const createDestinationPointEditTemplate = (point) => {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${timeFrom}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${timeTo}">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -96,7 +116,7 @@ const createDestinationPointEditTemplate = (point) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -108,8 +128,10 @@ const createDestinationPointEditTemplate = (point) => {
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
             <div class="event__available-offers">
+
+              ${offerElement}
+
               <div class="event__offer-selector">
                 <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
                 <label class="event__offer-label" for="event-offer-luggage-1">

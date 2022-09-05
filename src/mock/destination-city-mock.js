@@ -3,7 +3,7 @@ import {CitiesToTrip, CitiesDescription} from './const.js';
 
 
 // Функции для объекта назначение (Описывает город)
-const generateRandomCity = () => {
+export const generateRandomCity = () => {
 
   const randomIndex = getRandomInteger(0, CitiesToTrip.length - 1);
 
