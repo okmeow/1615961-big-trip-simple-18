@@ -1,15 +1,19 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {humanizeEditPointTime} from '../utils/utils.js';
+import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 
 const createDestinationPointEditTemplate = (point) => {
-  const {type, price, destination, dateFrom, dateTo, offers} = point;
+  const {type, price, destination, dateFrom, dateTo, tripDate, offers} = point;
 
   const timeFrom = dateFrom !== null
-    ? humanizeEditPointTime(dateFrom)
+    ? humanizePointTime(dateFrom)
     : '';
 
   const timeTo = dateTo !== null
-    ? humanizeEditPointTime(dateTo)
+    ? humanizePointTime(dateTo)
+    : '';
+
+  const date = tripDate !== null
+    ? humanizeEditPointTime(tripDate)
     : '';
 
   // const pointTypeOffer = offers
@@ -105,10 +109,10 @@ const createDestinationPointEditTemplate = (point) => {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${timeFrom}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${date} ${timeFrom}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${timeTo}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${date} ${timeTo}">
           </div>
 
           <div class="event__field-group  event__field-group--price">

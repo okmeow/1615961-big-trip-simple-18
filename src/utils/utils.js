@@ -13,7 +13,7 @@ const getRandomValue = (items) => (
 
 const humanizeTaskDueDate = (time) => dayjs(time).format('DD MMMM');
 const humanizePointTime = (time) => dayjs(time).format('HH:MM');
-const humanizeEditPointTime = (time) => dayjs(time).format('DD/MM/YY HH:MM');
+const humanizeEditPointTime = (time) => dayjs(time).format('DD/MM/YY');
 
 const updateArrayElement = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
