@@ -1,6 +1,7 @@
 export const allOffers = [
   {
     type: 'Taxi',
+    id: 1,
     offers: [
       {
         id: 1,
@@ -12,6 +13,7 @@ export const allOffers = [
 
   {
     type: 'Bus',
+    id: 2,
     offers: [
       {
         id: 1,
@@ -23,6 +25,7 @@ export const allOffers = [
 
   {
     type: 'Train',
+    id: 3,
     offers: [
       {
         id: 1,
@@ -34,6 +37,7 @@ export const allOffers = [
 
   {
     type: 'Ship',
+    id: 4,
     offers: [
       {
         id: 1,
@@ -55,6 +59,7 @@ export const allOffers = [
 
   {
     type: 'Drive',
+    id: 5,
     offers: [
       {
         id: 1,
@@ -66,6 +71,7 @@ export const allOffers = [
 
   {
     type: 'Flight',
+    id: 6,
     offers: [
       {
         id: 1,
@@ -97,6 +103,7 @@ export const allOffers = [
 
   {
     type: 'Check-in',
+    id: 7,
     offers: [
       {
         id: 1,
@@ -108,6 +115,7 @@ export const allOffers = [
 
   {
     type: 'Sightseeing',
+    id: 8,
     offers: [
       {
         id: 1,
@@ -123,6 +131,7 @@ export const allOffers = [
 
   {
     type: 'Restaurant',
+    id: 9,
     offers: [
       {
         id: 1,

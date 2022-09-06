@@ -26,6 +26,7 @@ export default class AppPresenter {
 
   #destinationCities = [];
   #tripPoints = [];
+  #tripOffers = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #sourcedTripPoints = [];
@@ -39,6 +40,7 @@ export default class AppPresenter {
   init = () => {
     this.#destinationCities = [...this.#destinationCitiesModel.cities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
+    this.#tripOffers = [...this.#tripPointsModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 

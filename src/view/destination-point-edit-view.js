@@ -1,8 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 
-const createDestinationPointEditTemplate = (point) => {
+const createDestinationPointEditTemplate = (point, offer) => {
   const {type, price, destination, dateFrom, dateTo, tripDate, offers} = point;
+  // const {id} = offer;
 
   const timeFrom = dateFrom !== null
     ? humanizePointTime(dateFrom)
@@ -16,8 +17,11 @@ const createDestinationPointEditTemplate = (point) => {
     ? humanizeEditPointTime(tripDate)
     : '';
 
-  // const pointTypeOffer = offers
-  //   .find((offer) => offer.type === point.type);
+    console.log(offers);
+
+  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
+
+  // console.log(pointTypeOffer);
 
   const offerElement =
     `<div class="event__offer-selector">
@@ -137,42 +141,6 @@ const createDestinationPointEditTemplate = (point) => {
               ${offerElement}
 
               <div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-                <label class="event__offer-label" for="event-offer-luggage-1">
-                  <span class="event__offer-title">Add luggage</span>
-                  &plus;&euro;&nbsp;
-                  <span class="event__offer-price">50</span>
-                </label>
-              </div>
-
-              <div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-                <label class="event__offer-label" for="event-offer-comfort-1">
-                  <span class="event__offer-title">Switch to comfort</span>
-                  &plus;&euro;&nbsp;
-                  <span class="event__offer-price">80</span>
-                </label>
-              </div>
-
-              <div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-                <label class="event__offer-label" for="event-offer-meal-1">
-                  <span class="event__offer-title">Add meal</span>
-                  &plus;&euro;&nbsp;
-                  <span class="event__offer-price">15</span>
-                </label>
-              </div>
-
-              <div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-                <label class="event__offer-label" for="event-offer-seats-1">
-                  <span class="event__offer-title">Choose seats</span>
-                  &plus;&euro;&nbsp;
-                  <span class="event__offer-price">5</span>
-                </label>
-              </div>
-
-              <div class="event__offer-selector">
                 <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
                 <label class="event__offer-label" for="event-offer-train-1">
                   <span class="event__offer-title">Travel by train</span>
@@ -195,10 +163,9 @@ const createDestinationPointEditTemplate = (point) => {
 
 export default class TripDestinationPointEditView extends AbstractStatefulView {
 
-
-  constructor(point) {
+  constructor(point, offer) {
     super();
-    this._state = TripDestinationPointEditView.parsePointToState(point);
+    this._state = TripDestinationPointEditView.parsePointToState(point, offer);
   }
 
   get template() {
