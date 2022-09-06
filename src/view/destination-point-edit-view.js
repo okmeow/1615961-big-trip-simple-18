@@ -1,9 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 
-const createDestinationPointEditTemplate = (point, offer) => {
+// const createDestinationPointEditTemplate = (point, offer) => {
+const createDestinationPointEditTemplate = (point) => {
   const {type, price, destination, dateFrom, dateTo, tripDate, offers} = point;
-  // const {id} = offer;
 
   const timeFrom = dateFrom !== null
     ? humanizePointTime(dateFrom)
@@ -17,11 +17,13 @@ const createDestinationPointEditTemplate = (point, offer) => {
     ? humanizeEditPointTime(tripDate)
     : '';
 
-    console.log(offers);
+  // const pointTypeOffer = offers
+  //   .find((offer) => offer.type === point.type);
 
-  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
+  // console.log(point.type);
 
-  // console.log(pointTypeOffer);
+  // pointTypeOffer.offers
+  //   .map((offer) => `${offerElement}`);
 
   const offerElement =
     `<div class="event__offer-selector">
@@ -33,8 +35,6 @@ const createDestinationPointEditTemplate = (point, offer) => {
       </label>
     </div>`;
 
-  // pointTypeOffer.offers
-  //   .map((offer) => `${offerElement}`);
 
   return (
     `<li class="trip-events__item">

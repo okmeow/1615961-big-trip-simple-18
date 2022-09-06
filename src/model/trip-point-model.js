@@ -6,12 +6,10 @@ export default class TripPointsModel {
   #offers = allOffers;
 
   get tripPoints() {
-    // console.log(this.#points);
     return this.#points;
   }
 
   get tripOffers() {
-    // console.log(this.#offers);
     return this.#offers;
   }
 

@@ -118,9 +118,9 @@ export default class AppPresenter {
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
-  #renderPoint = (point) => {
+  #renderPoint = (point, offer) => {
     const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element, this.#handlePointChange, this.#handleModeChange);
-    pointPresenter.init(point);
+    pointPresenter.init(point, offer);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
@@ -131,7 +131,7 @@ export default class AppPresenter {
 
   #renderPointList = () => {
     for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i]);
+      this.#renderPoint(this.#tripPoints[i], this.#tripOffers);
     }
   };
 
