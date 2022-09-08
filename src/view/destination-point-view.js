@@ -1,8 +1,23 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeTaskDueDate, humanizePointTime} from '../utils/utils.js';
 
-const createDestinationPointTemplate = (point) => {
+const createOffersTemplate = (offer) => {
+  const offerTemplate = offer.map(({id, offers}) => `
+  <li class='event__offer' id='${id}'>
+      <span class='event__offer-title'>${offers[0].title}</span>
+      &plus;&euro;&nbsp;
+      <span class='event__offer-price'>${offers[0].price}</span>
+  </li>
+  `);
+
+  return offerTemplate.join('');
+};
+
+const createDestinationPointTemplate = (point, offers) => {
   const {type, tripDate, price, destination, dateFrom, dateTo} = point;
+
+  const offersByType = offers.find((offer) => offer.type === point.type);
+  // const offersSelected = offersByType.offers.filter((offer) => offers.includes(offer.id));
 
   const date = tripDate !== null
     ? humanizeTaskDueDate(tripDate)
@@ -31,11 +46,7 @@ const createDestinationPointTemplate = (point) => {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          <li class="event__offer">
-            <span class="event__offer-title">Order Uber</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">20</span>
-          </li>
+          ${createOffersTemplate([offersByType])}
         </ul>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
@@ -47,14 +58,16 @@ const createDestinationPointTemplate = (point) => {
 
 export default class TripDestinationPointView extends AbstractView{
   #point = null;
+  #offer = [];
 
-  constructor(point) {
+  constructor(point, offer) {
     super();
     this.#point = point;
+    this.#offer = offer;
   }
 
   get template() {
-    return createDestinationPointTemplate(this.#point);
+    return createDestinationPointTemplate(this.#point, this.#offer);
   }
 
   #clickHandler = (evt) => {

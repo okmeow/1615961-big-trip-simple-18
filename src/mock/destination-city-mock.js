@@ -23,23 +23,23 @@ export const generateCity = () => ({
   name: generateRandomCity(),
   pictures: [
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     }
   ]
