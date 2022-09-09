@@ -2,11 +2,11 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeTaskDueDate, humanizePointTime} from '../utils/utils.js';
 
 const createOffersTemplate = (offer) => {
-  const offerTemplate = offer.map(({id, offers}) => `
-  <li class='event__offer' id='${id}'>
-      <span class='event__offer-title'>${offers[0].title}</span>
+  const offerTemplate = offer.map((offers) => `
+  <li class='event__offer' id='${offer.id}'>
+      <span class='event__offer-title'>${offers.title}</span>
       &plus;&euro;&nbsp;
-      <span class='event__offer-price'>${offers[0].price}</span>
+      <span class='event__offer-price'>${offers.price}</span>
   </li>
   `);
 
@@ -25,6 +25,7 @@ const createDestinationPointTemplate = (point, offers) => {
 
   const timeFrom = dateFrom ? humanizePointTime(dateFrom) : '';
   const timeTo = dateTo ? humanizePointTime(dateTo) : '';
+
 
   return (
     `<li class="trip-events__item">
@@ -46,7 +47,7 @@ const createDestinationPointTemplate = (point, offers) => {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${createOffersTemplate([offersByType])}
+          ${createOffersTemplate(offersByType.offers)}
         </ul>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
