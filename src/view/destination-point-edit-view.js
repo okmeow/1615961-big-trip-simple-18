@@ -4,8 +4,8 @@ import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 const createOffersTemplate = (offers) => {
   const offersTemplate = offers.map((offer) => `
       <div class='event__offer-selector'>
-      <input class='event__offer-checkbox  visually-hidden' id='event-offer-${offer.title}-1' type='checkbox' name='event-offer-${offer.title}' checked>
-      <label class='event__offer-label' for='event-offer-${offer.title}-1'>
+      <input class='event__offer-checkbox  visually-hidden' id='event-offer-${offer.id}-1' type='checkbox' name='event-offer-${offer.id}' checked>
+      <label class='event__offer-label' for='event-offer-${offer.id}-1'>
         <span class='event__offer-title'>${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class='event__offer-price'>${offer.price}</span>
