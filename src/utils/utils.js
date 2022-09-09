@@ -12,7 +12,7 @@ const getRandomValue = (items) => (
 );
 
 const humanizeTaskDueDate = (time) => dayjs(time).format('DD MMMM');
-const humanizePointTime = (time) => dayjs(time).format('HH:MM');
+const humanizePointTime = (time) => dayjs(time).format('hh:mm');
 const humanizeEditPointTime = (time) => dayjs(time).format('DD/MM/YY');
 
 const updateArrayElement = (items, update) => {
