@@ -5,7 +5,7 @@ import TripDestinationPointCreateView from '../view/destination-point-create-vie
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateArrayElement, sortPointDateUp, sortPointPriceDown} from '../utils/utils.js';
+import {updateArrayElement, sortPointDateUp, sortPointPriceDown, getRandomInteger} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -47,7 +47,7 @@ export default class AppPresenter {
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[0]);
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
 
     this.#renderContent();
   };

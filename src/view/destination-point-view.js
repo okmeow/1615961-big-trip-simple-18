@@ -2,13 +2,15 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeTaskDueDate, humanizePointTime} from '../utils/utils.js';
 
 const createOffersTemplate = (offer) => {
-  const offerTemplate = offer.map((offers) => `
-  <li class='event__offer' id='${offer.id}'>
+  const offerTemplate = offer.map((offers) =>
+    `
+    <li class='event__offer' id='${offer.id}'>
       <span class='event__offer-title'>${offers.title}</span>
       &plus;&euro;&nbsp;
       <span class='event__offer-price'>${offers.price}</span>
-  </li>
-  `);
+    </li>
+    `
+  );
 
   return offerTemplate.join('');
 };
@@ -28,7 +30,8 @@ const createDestinationPointTemplate = (point, offers) => {
 
 
   return (
-    `<li class="trip-events__item">
+    `
+    <li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="2019-03-18">${date}</time>
         <div class="event__type">
@@ -53,7 +56,8 @@ const createDestinationPointTemplate = (point, offers) => {
           <span class="visually-hidden">Open event</span>
         </button>
       </div>
-    </li>`
+    </li>
+    `
   );
 };
 

@@ -102,7 +102,12 @@ export const allOffers = [
         id: 1,
         title: 'Add breakfast',
         price: 50,
-      }
+      },
+      {
+        id: 2,
+        title: 'Pets friendly',
+        price: 150,
+      },
     ]
   },
 

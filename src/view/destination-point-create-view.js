@@ -1,7 +1,28 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-const createNewPointTemplate = (city) => {
+const createOffersTemplate = (offers) => {
+  const offersTemplate = offers.map((offer) =>
+    `
+    <div class='event__offer-selector'>
+      <input class='event__offer-checkbox  visually-hidden' id='event-offer-${offer.id}-1' type='checkbox' name='event-offer-${offer.id}'>
+      <label class='event__offer-label' for='event-offer-${offer.id}-1'>
+        <span class='event__offer-title'>${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class='event__offer-price'>${offer.price}</span>
+      </label>
+    </div>
+    `
+  );
+
+  return offersTemplate.join('');
+};
+
+const createNewPointTemplate = (city, offers, point) => {
   const {description, name, pictures} = city;
+  // const {type, tripDate, price, destination, dateFrom, dateTo} = point;
+
+  const pointTypeOffer = offers
+    .find((offer) => offer.type === point.type);
 
   return (
     `
@@ -10,7 +31,7 @@ const createNewPointTemplate = (city) => {
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${point.type}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -68,7 +89,7 @@ const createNewPointTemplate = (city) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Flight
+          ${point.type}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
         <datalist id="destination-list-1">
@@ -103,50 +124,9 @@ const createNewPointTemplate = (city) => {
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-              <label class="event__offer-label" for="event-offer-luggage-1">
-                <span class="event__offer-title">Add luggage</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">30</span>
-              </label>
-            </div>
 
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-              <label class="event__offer-label" for="event-offer-comfort-1">
-                <span class="event__offer-title">Switch to comfort class</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">100</span>
-              </label>
-            </div>
+            ${createOffersTemplate(pointTypeOffer.offers)}
 
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-              <label class="event__offer-label" for="event-offer-meal-1">
-                <span class="event__offer-title">Add meal</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">15</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-              <label class="event__offer-label" for="event-offer-seats-1">
-                <span class="event__offer-title">Choose seats</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">5</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-              <label class="event__offer-label" for="event-offer-train-1">
-                <span class="event__offer-title">Travel by train</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">40</span>
-              </label>
-            </div>
           </div>
         </section>
 
@@ -174,13 +154,17 @@ const createNewPointTemplate = (city) => {
 
 export default class TripDestinationPointCreateView extends AbstractView {
   #city = null;
+  #offers = [];
+  #point = null;
 
-  constructor(city) {
+  constructor(city, offers, point) {
     super();
     this.#city = city;
+    this.#offers = offers;
+    this.#point = point;
   }
 
   get template() {
-    return createNewPointTemplate(this.#city);
+    return createNewPointTemplate(this.#city, this.#offers, this.#point);
   }
 }
