@@ -1,11 +1,7 @@
 import {render} from '../framework/render.js';
-import ContentContainerView from '../view/content-container-view.js';
-import WrapperContentContainerView from '../view/wrapper-content-container-view.js';
-import WrapperFormContentContainerView from '../view/wrapper-form-content-container-view.js';
-import TripDestinationView from '../view/destination-view.js';
-import TripDestinationWrapperView from '../view/wrapper-destination-view.js';
-import TripOffersView from '../view/trip-offers-view.js';
-import newTripFormView from '../view/new-trip-parameters-view.js';
+import ContentContainerListView from '../view/content-container-view.js';
+import ContentContainerItemView from '../view/wrapper-content-container-view.js';
+import TripDestinationPointCreateView from '../view/destination-point-create-view.js';
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
 import PointPresenter from './point-presenter.js';
@@ -13,23 +9,26 @@ import {updateArrayElement, sortPointDateUp, sortPointPriceDown} from '../utils/
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
-  #tripContentContainerComponent = new ContentContainerView();
-  #tripItemComponent = new WrapperContentContainerView();
-  #tripItemFormComponent = new WrapperFormContentContainerView();
-  #tripDestinationWrapperComponent = new TripDestinationWrapperView();
+  #tripContentContainerListComponent = new ContentContainerListView();
+  #tripItemComponent = new ContentContainerItemView();
   #emptyPointListMessageComponent = new EmptyPointListMessageView();
   #sortComponent = new SortView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
   #tripPointsModel = null;
+  #tripNewPointCreateComponent = null;
 
-  #destinationCities = [];
+  #tripCities = [];
   #tripPoints = [];
   #tripOffers = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #sourcedTripPoints = [];
+
+  #point = null;
+  #offers = [];
+  #city = null;
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
     this.#fieldContainer = fieldContainer;
@@ -37,45 +36,28 @@ export default class AppPresenter {
     this.#destinationCitiesModel = destinationCitiesModel;
   }
 
-  init = () => {
-    this.#destinationCities = [...this.#destinationCitiesModel.cities];
+  init = (point, offers, city) => {
+    this.#point = point;
+    this.#offers = offers;
+    this.#city = city;
+
+    this.#tripCities = [...this.#destinationCitiesModel.tripCities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
     this.#tripOffers = [...this.#tripPointsModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[0]);
+
     this.#renderContent();
   };
 
-  #renderAboutDestination = () => {
-    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
-    this.#renderOffers();
-    this.#renderDestinationDescription();
-  };
-
-  #renderOffers = () => {
-    render(new TripOffersView(), this.#tripDestinationWrapperComponent.element);
-  };
-
-  #renderDestinationDescription = () => {
-    render(new TripDestinationView(this.#destinationCities[0]), this.#tripDestinationWrapperComponent.element);
-  };
-
-  #renderNewTripForm = () => {
-    render(new newTripFormView(), this.#tripItemFormComponent.element);
-  };
-
-  #renderAboutDestinationWrapper = () => {
-    render(this.#tripDestinationWrapperComponent, this.#tripItemFormComponent.element);
-  };
-
-  #renderTripParametersWrapper = () => {
-    render(this.#tripItemComponent, this.#tripContentContainerComponent.element);
-    render(this.#tripItemFormComponent, this.#tripItemComponent.element);
-  };
-
   #renderCommonWrapper = () => {
-    render(this.#tripContentContainerComponent, this.#fieldContainer);
+    render(this.#tripContentContainerListComponent, this.#fieldContainer);
+  };
+
+  #renderTripItemWrapper = () => {
+    render(this.#tripItemComponent, this.#tripContentContainerListComponent.element);
   };
 
   #sortPoints = (sortType) => {
@@ -104,7 +86,7 @@ export default class AppPresenter {
   };
 
   #renderSort = () => {
-    render(this.#sortComponent, this.#tripContentContainerComponent.element);
+    render(this.#sortComponent, this.#tripContentContainerListComponent.element);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
@@ -118,15 +100,14 @@ export default class AppPresenter {
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
-  #renderPoint = (point, offer) => {
-    const pointPresenter = new PointPresenter(this.#tripContentContainerComponent.element, this.#handlePointChange, this.#handleModeChange);
-    pointPresenter.init(point, offer);
-    this.#pointPresenter.set(point.id, pointPresenter);
+  #renderNewPointForm = () => {
+    render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
   };
 
-  #clearPointList = () => {
-    this.#pointPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointPresenter.clear();
+  #renderPoint = (point, offer) => {
+    const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handlePointChange, this.#handleModeChange);
+    pointPresenter.init(point, offer);
+    this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #renderPointList = () => {
@@ -135,21 +116,25 @@ export default class AppPresenter {
     }
   };
 
+  #clearPointList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+  };
+
   #renderNoPointsMessage = () => {
-    render(this.#emptyPointListMessageComponent, this.#tripContentContainerComponent.element);
+    render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
   };
 
   #renderContent = () => {
     this.#renderCommonWrapper();
 
-    if(this.#destinationCities.length === 0) {
+    if(this.#tripCities.length === 0) {
       return this.#renderNoPointsMessage();
     }
+
     this.#renderSort();
-    this.#renderAboutDestinationWrapper();
-    this.#renderTripParametersWrapper();
-    this.#renderNewTripForm();
-    this.#renderAboutDestination();
+    this.#renderTripItemWrapper();
+    this.#renderNewPointForm();
     this.#renderPointList();
   };
 }

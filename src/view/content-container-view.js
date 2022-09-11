@@ -5,7 +5,7 @@ const createContentContainerTemplate = () => (
   </ul>`
 );
 
-export default class ContentContainerView extends AbstractView{
+export default class ContentContainerListView extends AbstractView{
   get template() {
     return createContentContainerTemplate();
   }

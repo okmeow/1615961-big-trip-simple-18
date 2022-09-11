@@ -12,6 +12,4 @@ export default class TripPointsModel {
   get tripOffers() {
     return this.#offers;
   }
-
-
 }
