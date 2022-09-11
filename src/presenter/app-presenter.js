@@ -4,6 +4,7 @@ import ContentContainerItemView from '../view/wrapper-content-container-view.js'
 import TripDestinationPointCreateView from '../view/destination-point-create-view.js';
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
+import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
 import {updateArrayElement, sortPointDateUp, sortPointPriceDown, getRandomInteger} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
@@ -18,6 +19,7 @@ export default class AppPresenter {
   #destinationCitiesModel = null;
   #tripPointsModel = null;
   #tripNewPointCreateComponent = null;
+  #newEventButtonComponent = null;
 
   #tripCities = [];
   #tripPoints = [];
@@ -49,7 +51,14 @@ export default class AppPresenter {
 
     this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
 
+    this.#newEventButtonComponent = new ButtonNewEventView();
+    this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
+
     this.#renderContent();
+  };
+
+  #handleNewEventClick = () => {
+    this.#renderNewPointForm();
   };
 
   #renderCommonWrapper = () => {
@@ -134,7 +143,7 @@ export default class AppPresenter {
 
     this.#renderSort();
     this.#renderTripItemWrapper();
-    this.#renderNewPointForm();
+    // this.#renderNewPointForm();
     this.#renderPointList();
   };
 }
