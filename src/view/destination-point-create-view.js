@@ -167,4 +167,14 @@ export default class TripDestinationPointCreateView extends AbstractView {
   get template() {
     return createNewPointTemplate(this.#city, this.#offers, this.#point);
   }
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
+
+  setCloseCreatePointButtonHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
+  };
 }

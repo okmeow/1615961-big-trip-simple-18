@@ -1,4 +1,4 @@
-import {render} from '../framework/render.js';
+import {remove, render} from '../framework/render.js';
 import ContentContainerListView from '../view/content-container-view.js';
 import ContentContainerItemView from '../view/wrapper-content-container-view.js';
 import TripDestinationPointCreateView from '../view/destination-point-create-view.js';
@@ -50,6 +50,7 @@ export default class AppPresenter {
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
     this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
+    this.#tripNewPointCreateComponent.setCloseCreatePointButtonHandler(this.#handleNewEventCloseClick);
 
     this.#newEventButtonComponent = new ButtonNewEventView();
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
@@ -59,6 +60,13 @@ export default class AppPresenter {
 
   #handleNewEventClick = () => {
     this.#renderNewPointForm();
+  };
+
+  #handleNewEventCloseClick = () => {
+    remove(this.#tripNewPointCreateComponent);
+    // Добавить навешивание этого обработчика повторно при отрисовке элемента (закрытие срабатывает один раз)
+    // Добавить обработчик закрытия по кнопке эскейп
+    // Добавить закрытие формы редактирования при открывании формы создания
   };
 
   #renderCommonWrapper = () => {
@@ -111,6 +119,10 @@ export default class AppPresenter {
 
   #renderNewPointForm = () => {
     render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
+  };
+
+  #closeNewPointForm = () => {
+    remove(this.#tripNewPointCreateComponent);
   };
 
   #renderPoint = (point, offer) => {
