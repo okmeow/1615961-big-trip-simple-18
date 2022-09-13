@@ -134,6 +134,12 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     return createDestinationPointEditTemplate(this._state, this.#offer);
   }
 
+  reset = (point) => {
+    this.updateElement(
+      TripDestinationPointEditView.parsePointToState(point),
+    );
+  };
+
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
