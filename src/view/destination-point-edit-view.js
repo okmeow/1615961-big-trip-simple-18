@@ -144,6 +144,8 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     super();
     this._state = TripDestinationPointEditView.parsePointToState(point);
     this.#offer = offer;
+
+    this.#setEditPointHandlers();
   }
 
   get template() {
@@ -168,6 +170,17 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   setEditFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  _restoreHandlers = () => {
+    this.#setEditPointHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setCancelClickHandler();
+  };
+
+
+  #setEditPointHandlers = () => {
+
   };
 
   static parsePointToState = (point) => ({...point,
