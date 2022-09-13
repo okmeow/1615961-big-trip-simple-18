@@ -94,6 +94,8 @@ export default class PointPresenter {
   };
 
   #handleCloseEditClick = () => {
+    document.removeEventListener('keydown', this.#escapeKeyDownHandler);
+    this.#pointEditComponent.reset(this.#point);
     this.#replaceEditPointToPoint();
   };
 }
