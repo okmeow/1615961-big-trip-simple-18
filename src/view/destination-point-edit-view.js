@@ -86,10 +86,10 @@ const createDestinationPointEditTemplate = (point, offers) => {
           </div>
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${date} ${timeFrom}">
+            <input class="event__input  event__input--time event__input--time-from" id="event-start-time-1" type="text" name="event-start-time" value="${date} ${timeFrom}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${date} ${timeTo}">
+            <input class="event__input  event__input--time event__input--time-to" id="event-end-time-1" type="text" name="event-end-time" value="${date} ${timeTo}">
           </div>
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
@@ -123,6 +123,8 @@ const createDestinationPointEditTemplate = (point, offers) => {
 
 export default class TripDestinationPointEditView extends AbstractStatefulView {
   #offer = [];
+  #dateFromPicker = null;
+  #dateToPicker = null;
 
   constructor(point, offer) {
     super();
@@ -135,6 +137,20 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   get template() {
     return createDestinationPointEditTemplate(this._state, this.#offer);
   }
+
+  removeElement = () => {
+    super.removeElement();
+
+    if (this.#dateFromPicker) {
+      this.#dateFromPicker.destroy();
+      this.#dateFromPicker = null;
+    }
+
+    if (this.#dateToPicker) {
+      this.#dateToPicker.destroy();
+      this.#dateToPicker = null;
+    }
+  };
 
   reset = (point) => {
     this.updateElement(
@@ -191,7 +207,44 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     });
   };
 
+  #changeDateFromHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate
+    });
+  };
+
+  #changeDateToHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate
+    });
+  };
+
+  #setDatepicker = () => {
+    const {dateFrom, dateTo} = this._state;
+
+    this.#dateFromPicker = flatpickr(
+      this.element.querySelector('.event__input--time-from'),
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: dateFrom,
+        enableTime: true,
+        onInput: this.#changeDateFromHandler
+      }
+    );
+
+    this.#dateToPicker = flatpickr(
+      this.element.querySelector('.event__input--time-to'),
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: dateTo,
+        enableTime: true,
+        onInput: this.#changeDateToHandler
+      }
+    );
+  };
+
   setEditPointHandlers = () => {
+    this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
