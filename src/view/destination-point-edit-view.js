@@ -1,6 +1,8 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 import {PointTypes} from '../mock/const.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripTransportTypeList = (point) => {
   const eventTypeListTemplate = PointTypes.map((type) => `
