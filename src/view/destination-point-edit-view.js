@@ -165,12 +165,28 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
 
     this.updateElement({
       type: evt.target.value,
-      offers: [],
+    });
+  };
+
+  #changeDestinationInputHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      destination: evt.target.value,
+    });
+  };
+
+  #changePriceHandler = (evt) => {
+    evt.preventDefault();
+
+    this.updateElement({
+      price: evt.target.value
     });
   };
 
   setEditPointHandlers = () => {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
   };
 
   static parsePointToState = (point) => ({...point,
