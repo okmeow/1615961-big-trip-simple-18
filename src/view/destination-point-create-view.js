@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const createOffersTemplate = (offers) => {
   const offersTemplate = offers.map((offer) =>
@@ -152,20 +152,19 @@ const createNewPointTemplate = (city, offers, point) => {
   );
 };
 
-export default class TripDestinationPointCreateView extends AbstractView {
-  #city = null;
+export default class TripDestinationPointCreateView extends AbstractStatefulView {
   #offers = [];
-  #point = null;
+  #city = null;
 
-  constructor(city, offers, point) {
+  constructor(point, city, offers) {
     super();
+    this._state = TripDestinationPointCreateView.parsePointToState(point);
     this.#city = city;
     this.#offers = offers;
-    this.#point = point;
   }
 
   get template() {
-    return createNewPointTemplate(this.#city, this.#offers, this.#point);
+    return createNewPointTemplate(this._state, this.#city, this.#offers);
   }
 
   #clickHandler = (evt) => {
@@ -176,5 +175,19 @@ export default class TripDestinationPointCreateView extends AbstractView {
   setCloseCreatePointButtonHandler = (callback) => {
     this._callback.click = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  static parsePointToState = (point) => (
+    {...point,
+
+    }
+  );
+
+  static parseStateToPoint = (state) => {
+    const point = {...state};
+
+    // данные нужные только в состоянии, удаление их
+
+    return point;
   };
 }
