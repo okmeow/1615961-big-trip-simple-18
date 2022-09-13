@@ -34,8 +34,8 @@ export default class AppPresenter {
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
     this.#fieldContainer = fieldContainer;
-    this.#tripPointsModel = tripPointsModel;
     this.#destinationCitiesModel = destinationCitiesModel;
+    this.#tripPointsModel = tripPointsModel;
   }
 
   init = (point, offers, city) => {
