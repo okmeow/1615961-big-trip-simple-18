@@ -18,6 +18,7 @@ export default class PointPresenter {
   #pointEditComponent = null;
 
   #point = null;
+  #offers = [];
   #mode = Mode.DEFAULT;
 
   constructor(pointListContainer, changeData, changeMode) {
@@ -26,14 +27,15 @@ export default class PointPresenter {
     this.#changeMode = changeMode;
   }
 
-  init = (point) => {
+  init = (point, offers) => {
     this.#point = point;
+    this.#offers = offers;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
-    this.#pointComponent = new TripDestinationPointView(point);
-    this.#pointEditComponent = new TripDestinationPointEditView(point);
+    this.#pointComponent = new TripDestinationPointView(point, offers);
+    this.#pointEditComponent = new TripDestinationPointEditView(point, offers);
 
     this.#pointComponent.setShowEditFormButtonClickHandler(this.#handleOpenEditClick);
     this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick);
@@ -61,6 +63,7 @@ export default class PointPresenter {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceEditPointToPoint();
     }
   };
@@ -81,6 +84,7 @@ export default class PointPresenter {
   #escapeKeyDownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceEditPointToPoint();
     }
   };
@@ -90,6 +94,8 @@ export default class PointPresenter {
   };
 
   #handleCloseEditClick = () => {
+    document.removeEventListener('keydown', this.#escapeKeyDownHandler);
+    this.#pointEditComponent.reset(this.#point);
     this.#replaceEditPointToPoint();
   };
 }

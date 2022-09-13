@@ -3,7 +3,7 @@ import {CitiesToTrip, CitiesDescription} from './const.js';
 
 
 // Функции для объекта назначение (Описывает город)
-const generateRandomCity = () => {
+export const generateRandomCity = () => {
 
   const randomIndex = getRandomInteger(0, CitiesToTrip.length - 1);
 
@@ -23,23 +23,23 @@ export const generateCity = () => ({
   name: generateRandomCity(),
   pictures: [
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     },
     {
-      src: `http://picsum.photos/248/152?r=${getRandomInteger(1, 1000)}`,
+      src: `https://placekitten.com/200/${getRandomInteger(1, 1000)}`,
       description: generateRandomCityDescription(),
     }
   ]
