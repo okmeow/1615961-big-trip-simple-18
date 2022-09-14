@@ -10,7 +10,7 @@ const createTripTransportTypeList = (point) => {
       <input id='event-type-${type}-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='${type}'
       ${point.type === type ? 'checked' : ''}>
       <label class='event__type-label  event__type-label--${type.toLowerCase()}' for='event-type-${type}-1'>
-      ${type}
+        ${type}
       </label>
     </div>
   `);
@@ -55,7 +55,8 @@ const createDestinationPointEditTemplate = (point, offers) => {
   // const offersSelected = pointTypeOffer.offers.filter((offer) => point.offers.includes(offer.id));
 
   return (
-    `<li class="trip-events__item">
+    `
+    <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
@@ -117,7 +118,8 @@ const createDestinationPointEditTemplate = (point, offers) => {
           </section>
         </section>
       </form>
-    </li>`
+    </li>
+    `
   );
 };
 
@@ -181,7 +183,6 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   _restoreHandlers = () => {
     this.setEditPointHandlers();
     this.setEditFormSubmitHandler(this._callback.formSubmit);
-    this.setCloseEditFormButtonClickHandler();
   };
 
   #changeTypeHandler = (evt) => {
@@ -248,6 +249,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
   };
 
   static parsePointToState = (point) => (

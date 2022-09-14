@@ -6,7 +6,7 @@ import EmptyPointListMessageView from '../view/empty-point-list-message-view.js'
 import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateArrayElement, sortPointDateUp, sortPointPriceDown, getRandomInteger} from '../utils/utils.js';
+import {updateArrayElement, sortPointDateUp, sortPointPriceDown, getRandomInteger, isEscapeKey} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -49,10 +49,9 @@ export default class AppPresenter {
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
-    this.#tripNewPointCreateComponent.setCloseCreatePointButtonHandler(this.#handleNewEventCloseClick);
-
     this.#newEventButtonComponent = new ButtonNewEventView();
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
+
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
     this.#renderContent();
@@ -60,13 +59,28 @@ export default class AppPresenter {
 
   #handleNewEventClick = () => {
     this.#renderNewPointForm();
+    this.#tripNewPointCreateComponent.setCloseCreatePointButtonHandler(this.#handleNewEventCloseClick);
+    document.addEventListener('keydown', this.#escapeKeyDownHandler);
   };
 
   #handleNewEventCloseClick = () => {
     remove(this.#tripNewPointCreateComponent);
-    // Добавить навешивание этого обработчика повторно при отрисовке элемента (закрытие срабатывает один раз)
-    // Добавить обработчик закрытия по кнопке эскейп
+
+    // Добавить навешивание этого обработчика повторно при отрисовке элемента
     // Добавить закрытие формы редактирования при открывании формы создания
+  };
+
+  #escapeKeyDownHandler = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      this.#tripNewPointCreateComponent.reset(this.#point);
+      this.#deleteNewEventForm();
+    }
+  };
+
+  #deleteNewEventForm = () => {
+    remove(this.#tripNewPointCreateComponent);
+    document.removeEventListener('keydown', this.#escapeKeyDownHandler);
   };
 
   #renderCommonWrapper = () => {

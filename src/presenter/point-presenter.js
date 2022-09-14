@@ -38,7 +38,7 @@ export default class PointPresenter {
     this.#pointEditComponent = new TripDestinationPointEditView(point, offers);
 
     this.#pointComponent.setShowEditFormButtonClickHandler(this.#handleOpenEditClick);
-    this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick);
+    // this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick); - не работает
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       return render(this.#pointComponent, this.#pointListContainer);
@@ -71,6 +71,7 @@ export default class PointPresenter {
   #replacePointToEditPoint = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
+    // this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick); - не работает
     this.#changeMode();
     this.#mode = Mode.EDITING;
   };
@@ -91,6 +92,7 @@ export default class PointPresenter {
 
   #handleOpenEditClick = () => {
     this.#replacePointToEditPoint();
+    this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick);
   };
 
   #handleCloseEditClick = () => {
