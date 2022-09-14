@@ -250,7 +250,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
 
   setSubmitCreationFormHandler = (callback) => {
     this._callback.formSubmit = callback;
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+    // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler); - вызывает ошибку
   };
 
   setCloseCreatePointButtonClickHandler = (callback) => {

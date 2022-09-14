@@ -36,7 +36,7 @@ export default class PointPresenter {
 
     this.#pointComponent = new TripDestinationPointView(point, offers);
     this.#pointEditComponent = new TripDestinationPointEditView(point, offers);
-    // console.log(point);
+
     this.#pointComponent.setShowEditFormButtonClickHandler(this.#handleOpenEditClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -70,7 +70,6 @@ export default class PointPresenter {
   #replacePointToEditPoint = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
-    // this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick); - не работает
     this.#changeMode();
     this.#mode = Mode.EDITING;
   };

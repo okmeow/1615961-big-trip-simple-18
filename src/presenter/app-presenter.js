@@ -38,7 +38,7 @@ export default class AppPresenter {
     this.#destinationCitiesModel = destinationCitiesModel;
   }
 
-  init = (point, offers, city) => {
+  init = (city, offers, point) => {
     this.#point = point;
     this.#offers = offers;
     this.#city = city;
@@ -53,7 +53,7 @@ export default class AppPresenter {
     this.#newEventButtonComponent = new ButtonNewEventView();
     // this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
     this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[0], this.#offers, this.#tripPoints[0]);
-    // console.log(this.#offers);
+
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
     this.#renderContent();
@@ -67,9 +67,6 @@ export default class AppPresenter {
 
   #handleNewEventCloseClick = () => {
     remove(this.#tripNewPointCreateComponent);
-
-    // Добавить навешивание этого обработчика повторно при отрисовке элемента
-    // Добавить закрытие формы редактирования при открывании формы создания
   };
 
   #escapeKeyDownHandler = (evt) => {
@@ -137,10 +134,6 @@ export default class AppPresenter {
     render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
   };
 
-  // #closeNewPointForm = () => {
-  //   remove(this.#tripNewPointCreateComponent);
-  // };
-
   #renderPoint = (point, offer) => {
     const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handlePointChange, this.#handleModeChange);
     pointPresenter.init(point, offer);
@@ -171,7 +164,6 @@ export default class AppPresenter {
 
     this.#renderSort();
     this.#renderTripItemWrapper();
-    // this.#renderNewPointForm();
     this.#renderPointList();
   };
 }
