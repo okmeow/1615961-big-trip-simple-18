@@ -39,7 +39,7 @@ const createOffersTemplate = (offers) => {
 
 const createNewPointTemplate = (point, city, offers) => {
   const {description, name, pictures} = city;
-  const {type, price, dateFrom, dateTo, tripDate} = point;
+  const {type, dateFrom, dateTo, tripDate} = point;
 
   const timeFrom = dateFrom !== null
     ? humanizePointTime(dateFrom)
@@ -58,7 +58,7 @@ const createNewPointTemplate = (point, city, offers) => {
 
   return (
     `
-    <form class="event event--edit" action="#" method="post">
+    <form class="event event--edit" action="#" method="">
       <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -102,7 +102,7 @@ const createNewPointTemplate = (point, city, offers) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -184,10 +184,10 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this._callback.click();
   };
 
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    // this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
-  };
+  // #formSubmitHandler = (evt) => {
+  // evt.preventDefault();
+  // this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
+  // };
 
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
@@ -207,7 +207,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
   #changePriceHandler = (evt) => {
     evt.preventDefault();
 
-    this.updateElement({
+    this._setState({
       price: evt.target.value
     });
   };
@@ -248,9 +248,9 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     );
   };
 
-  setSubmitCreationFormHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler); - вызывает ошибку
+  setSubmitCreationFormHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit(this._state);
   };
 
   setCloseCreatePointClickHandler = (callback) => {
@@ -261,14 +261,14 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
   setInnerCreatePointHandlers = () => {
     this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerCreatePointHandlers();
-    this.setSubmitCreationFormHandler(this._callback.formSubmit);
+    // this.setSubmitCreationFormHandler(this._callback.formSubmit);
     this.setCloseCreatePointClickHandler(this._callback.click);
   };
 

@@ -60,7 +60,7 @@ const createDestinationPointEditTemplate = (point, offers, cities) => {
   return (
     `
     <li class="trip-events__item">
-      <form class="event event--edit" action="#" method="post">
+      <form class="event event--edit" action="#" method="">
         <header class="event__header">
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -193,7 +193,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   #changePriceHandler = (evt) => {
     evt.preventDefault();
 
-    this.updateElement({
+    this._setState({
       price: evt.target.value
     });
   };
@@ -234,10 +234,10 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     );
   };
 
-  setEditFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
-  };
+  // setEditFormSubmitHandler = (callback) => {
+  //   this._callback.formSubmit = callback;
+  //   this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  // };
 
   setCloseEditFormButtonClickHandler = (callback) => {
     this._callback.click = callback;
@@ -260,7 +260,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
 
   _restoreHandlers = () => {
     this.setInnerEditPointHandlers();
-    this.setEditFormSubmitHandler(this._callback.formSubmit);
+    // this.setEditFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteEditFormButtonClickHandler(this._callback.click);
     this.setCloseEditFormButtonClickHandler(this._callback.click);
   };

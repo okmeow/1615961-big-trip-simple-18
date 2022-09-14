@@ -103,7 +103,7 @@ export default class PointPresenter {
   };
 
   #handleDeletePointClick = () => {
-    console.log('handleDeletePointClick');
+    // console.log('handleDeletePointClick');
     // this.#replacePointToEditPoint();
     // this.#pointEditComponent.removeElement();
     // this.#pointComponent.removeElement();
