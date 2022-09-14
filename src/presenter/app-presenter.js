@@ -6,7 +6,7 @@ import EmptyPointListMessageView from '../view/empty-point-list-message-view.js'
 import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateArrayElement, sortPointDateUp, sortPointPriceDown, getRandomInteger, isEscapeKey} from '../utils/utils.js';
+import {updateArrayElement, sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
 import {SortType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -45,13 +45,15 @@ export default class AppPresenter {
 
     this.#tripCities = [...this.#destinationCitiesModel.tripCities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    this.#tripOffers = [...this.#tripPointsModel.tripOffers];
+    // this.#tripOffers = [...this.#tripPointsModel.tripOffers];
+    this.#offers = [...this.#tripPointsModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
     this.#newEventButtonComponent = new ButtonNewEventView();
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
-
+    // this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[0], this.#offers, this.#tripPoints[0]);
+    // console.log(this.#offers);
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
     this.#renderContent();
@@ -59,7 +61,7 @@ export default class AppPresenter {
 
   #handleNewEventClick = () => {
     this.#renderNewPointForm();
-    this.#tripNewPointCreateComponent.setCloseCreatePointButtonHandler(this.#handleNewEventCloseClick);
+    this.#tripNewPointCreateComponent.setCloseCreatePointButtonClickHandler(this.#handleNewEventCloseClick);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
   };
 
@@ -147,7 +149,7 @@ export default class AppPresenter {
 
   #renderPointList = () => {
     for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i], this.#tripOffers);
+      this.#renderPoint(this.#tripPoints[i], this.#offers);
     }
   };
 

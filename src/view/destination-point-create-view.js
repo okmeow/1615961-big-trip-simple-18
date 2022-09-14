@@ -4,6 +4,22 @@ import {PointTypes} from '../mock/const.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const createTripTransportTypeList = (point) => {
+  const eventTypeListTemplate = PointTypes.map((type) =>
+    `
+    <div class='event__type-item'>
+      <input id='event-type-${type}-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='${type}'
+      ${point.type === type ? 'checked' : ''}>
+      <label class='event__type-label  event__type-label--${type.toLowerCase()}' for='event-type-${type}-1'>
+        ${type}
+      </label>
+    </div>
+    `
+  );
+
+  return eventTypeListTemplate.join('');
+};
+
 const createOffersTemplate = (offers) => {
   const offersTemplate = offers.map((offer) =>
     `
@@ -19,20 +35,6 @@ const createOffersTemplate = (offers) => {
   );
 
   return offersTemplate.join('');
-};
-
-const createTripTransportTypeList = (point) => {
-  const eventTypeListTemplate = PointTypes.map((type) => `
-    <div class='event__type-item'>
-      <input id='event-type-${type}-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='${type}'
-      ${point.type === type ? 'checked' : ''}>
-      <label class='event__type-label  event__type-label--${type.toLowerCase()}' for='event-type-${type}-1'>
-        ${type}
-      </label>
-    </div>
-  `);
-
-  return eventTypeListTemplate.join('');
 };
 
 const createNewPointTemplate = (city, offers, point) => {
@@ -177,20 +179,19 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     );
   };
 
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    // this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
-  };
-
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
   };
 
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    // this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
+  };
+
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
-    console.log(evt.target.value);
-    console.log(this);
+
     this.updateElement({
       type: evt.target.value,
     });
@@ -249,9 +250,10 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
 
   setSubmitCreationFormHandler = (callback) => {
     this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
-  setCloseCreatePointButtonHandler = (callback) => {
+  setCloseCreatePointButtonClickHandler = (callback) => {
     this._callback.click = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
   };

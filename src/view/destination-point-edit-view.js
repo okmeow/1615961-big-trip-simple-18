@@ -5,7 +5,8 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripTransportTypeList = (point) => {
-  const eventTypeListTemplate = PointTypes.map((type) => `
+  const eventTypeListTemplate = PointTypes.map((type) =>
+    `
     <div class='event__type-item'>
       <input id='event-type-${type}-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='${type}'
       ${point.type === type ? 'checked' : ''}>
@@ -13,14 +14,16 @@ const createTripTransportTypeList = (point) => {
         ${type}
       </label>
     </div>
-  `);
+  `
+  );
 
   return eventTypeListTemplate.join('');
 };
 
 const createOffersTemplate = (offers) => {
-  const offersTemplate = offers.map((offer) => `
-      <div class='event__offer-selector'>
+  const offersTemplate = offers.map((offer) =>
+    `
+    <div class='event__offer-selector'>
       <input class='event__offer-checkbox  visually-hidden' id='event-offer-${offer.id}-1' type='checkbox' name='event-offer-${offer.id}' checked>
       <label class='event__offer-label' for='event-offer-${offer.id}-1'>
         <span class='event__offer-title'>${offer.title}</span>
@@ -28,7 +31,8 @@ const createOffersTemplate = (offers) => {
         <span class='event__offer-price'>${offer.price}</span>
       </label>
     </div>
-    `);
+    `
+  );
 
   return offersTemplate.join('');
 };
@@ -50,7 +54,6 @@ const createDestinationPointEditTemplate = (point, offers) => {
 
   const pointTypeOffer = offers
     .find((offer) => offer.type === point.type);
-
 
   // const offersSelected = pointTypeOffer.offers.filter((offer) => point.offers.includes(offer.id));
 
@@ -124,20 +127,20 @@ const createDestinationPointEditTemplate = (point, offers) => {
 };
 
 export default class TripDestinationPointEditView extends AbstractStatefulView {
-  #offer = [];
+  #offers = [];
   #dateFromPicker = null;
   #dateToPicker = null;
 
-  constructor(point, offer) {
+  constructor(point, offers) {
     super();
     this._state = TripDestinationPointEditView.parsePointToState(point);
-    this.#offer = offer;
+    this.#offers = offers;
 
     this.setInnerEditPointHandlers();
   }
 
   get template() {
-    return createDestinationPointEditTemplate(this._state, this.#offer);
+    return createDestinationPointEditTemplate(this._state, this.#offers);
   }
 
   removeElement = () => {
@@ -170,25 +173,9 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this._callback.formSubmit(TripDestinationPointEditView.parseStateToPoint(this._state));
   };
 
-  setCloseEditFormButtonClickHandler = (callback) => {
-    this._callback.click = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
-  };
-
-  setEditFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
-  };
-
-  _restoreHandlers = () => {
-    this.setInnerEditPointHandlers();
-    this.setEditFormSubmitHandler(this._callback.formSubmit);
-  };
-
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
-    console.log(evt.target.value);
-    console.log(this);
+
     this.updateElement({
       type: evt.target.value,
     });
@@ -245,12 +232,27 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     );
   };
 
+  setEditFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  setCloseEditFormButtonClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+  };
+
   setInnerEditPointHandlers = () => {
     this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  _restoreHandlers = () => {
+    this.setInnerEditPointHandlers();
+    this.setEditFormSubmitHandler(this._callback.formSubmit);
   };
 
   static parsePointToState = (point) => (

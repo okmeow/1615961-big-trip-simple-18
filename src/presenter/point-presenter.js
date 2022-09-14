@@ -36,9 +36,8 @@ export default class PointPresenter {
 
     this.#pointComponent = new TripDestinationPointView(point, offers);
     this.#pointEditComponent = new TripDestinationPointEditView(point, offers);
-
+    // console.log(point);
     this.#pointComponent.setShowEditFormButtonClickHandler(this.#handleOpenEditClick);
-    // this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick); - не работает
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       return render(this.#pointComponent, this.#pointListContainer);
