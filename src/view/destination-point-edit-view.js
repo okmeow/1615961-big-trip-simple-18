@@ -133,7 +133,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this._state = TripDestinationPointEditView.parsePointToState(point);
     this.#offer = offer;
 
-    this.setEditPointHandlers();
+    this.setInnerEditPointHandlers();
   }
 
   get template() {
@@ -181,13 +181,14 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   };
 
   _restoreHandlers = () => {
-    this.setEditPointHandlers();
+    this.setInnerEditPointHandlers();
     this.setEditFormSubmitHandler(this._callback.formSubmit);
   };
 
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
-
+    console.log(evt.target.value);
+    console.log(this);
     this.updateElement({
       type: evt.target.value,
     });
@@ -244,7 +245,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     );
   };
 
-  setEditPointHandlers = () => {
+  setInnerEditPointHandlers = () => {
     this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);

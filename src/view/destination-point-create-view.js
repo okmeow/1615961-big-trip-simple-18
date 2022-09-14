@@ -150,7 +150,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.#city = city;
     this.#offers = offers;
 
-    this.setCreatePointHandlers();
+    this.setInnerCreatePointHandlers();
   }
 
   get template() {
@@ -189,7 +189,8 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
 
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
-
+    console.log(evt.target.value);
+    console.log(this);
     this.updateElement({
       type: evt.target.value,
     });
@@ -255,7 +256,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
   };
 
-  setCreatePointHandlers = () => {
+  setInnerCreatePointHandlers = () => {
     this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
@@ -264,7 +265,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
   };
 
   _restoreHandlers = () => {
-    this.setCreatePointHandlers();
+    this.setInnerCreatePointHandlers();
     this.setSubmitCreationFormHandler(this._callback.formSubmit);
   };
 

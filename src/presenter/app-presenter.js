@@ -135,9 +135,9 @@ export default class AppPresenter {
     render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
   };
 
-  #closeNewPointForm = () => {
-    remove(this.#tripNewPointCreateComponent);
-  };
+  // #closeNewPointForm = () => {
+  //   remove(this.#tripNewPointCreateComponent);
+  // };
 
   #renderPoint = (point, offer) => {
     const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handlePointChange, this.#handleModeChange);
