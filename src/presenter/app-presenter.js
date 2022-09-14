@@ -30,7 +30,7 @@ export default class AppPresenter {
 
   #point = null;
   #offers = [];
-  #city = null;
+  #cities = [];
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
     this.#fieldContainer = fieldContainer;
@@ -38,21 +38,20 @@ export default class AppPresenter {
     this.#destinationCitiesModel = destinationCitiesModel;
   }
 
-  init = (city, offers, point) => {
+  init = (point, offers, cities) => {
     this.#point = point;
     this.#offers = offers;
-    this.#city = city;
+    this.#cities = cities;
 
-    this.#tripCities = [...this.#destinationCitiesModel.tripCities];
+    this.#cities = [...this.#destinationCitiesModel.tripCities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    // this.#tripOffers = [...this.#tripPointsModel.tripOffers];
     this.#offers = [...this.#tripPointsModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
     this.#newEventButtonComponent = new ButtonNewEventView();
-    // this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[getRandomInteger(0, 2)], this.#tripOffers, this.#tripPoints[getRandomInteger(0, 4)]);
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripCities[0], this.#offers, this.#tripPoints[0]);
+
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#cities[0], this.#offers, this.#tripPoints[0]);
 
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
@@ -134,15 +133,15 @@ export default class AppPresenter {
     render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
   };
 
-  #renderPoint = (point, offer) => {
+  #renderPoint = (point, offers, cities) => {
     const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handlePointChange, this.#handleModeChange);
-    pointPresenter.init(point, offer);
+    pointPresenter.init(point, offers, cities);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #renderPointList = () => {
     for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i], this.#offers);
+      this.#renderPoint(this.#tripPoints[i], this.#offers, this.#cities);
     }
   };
 
@@ -158,7 +157,7 @@ export default class AppPresenter {
   #renderContent = () => {
     this.#renderCommonWrapper();
 
-    if(this.#tripCities.length === 0) {
+    if(this.#cities.length === 0) {
       return this.#renderNoPointsMessage();
     }
 

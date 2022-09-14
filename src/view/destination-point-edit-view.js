@@ -128,19 +128,21 @@ const createDestinationPointEditTemplate = (point, offers) => {
 
 export default class TripDestinationPointEditView extends AbstractStatefulView {
   #offers = [];
+  #cities = [];
   #dateFromPicker = null;
   #dateToPicker = null;
 
-  constructor(point, offers) {
+  constructor(point, offers, cities) {
     super();
     this._state = TripDestinationPointEditView.parsePointToState(point);
     this.#offers = offers;
+    this.#cities = cities;
 
     this.setInnerEditPointHandlers();
   }
 
   get template() {
-    return createDestinationPointEditTemplate(this._state, this.#offers);
+    return createDestinationPointEditTemplate(this._state, this.#offers, this.#cities);
   }
 
   removeElement = () => {
