@@ -60,7 +60,7 @@ export default class AppPresenter {
 
   #handleNewEventClick = () => {
     this.#renderNewPointForm();
-    this.#tripNewPointCreateComponent.setCloseCreatePointButtonClickHandler(this.#handleNewEventCloseClick);
+    this.#tripNewPointCreateComponent.setCloseCreatePointClickHandler(this.#handleNewEventCloseClick);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
   };
 

@@ -37,7 +37,7 @@ const createOffersTemplate = (offers) => {
   return offersTemplate.join('');
 };
 
-const createDestinationPointEditTemplate = (point, offers) => {
+const createDestinationPointEditTemplate = (point, offers, cities) => {
   const {type, price, destination, dateFrom, dateTo, tripDate} = point;
 
   const timeFrom = dateFrom !== null
@@ -103,7 +103,7 @@ const createDestinationPointEditTemplate = (point, offers) => {
             <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__reset-btn event__delete-btn" type="reset">Delete</button>
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
           </button>
@@ -117,7 +117,7 @@ const createDestinationPointEditTemplate = (point, offers) => {
           </section>
           <section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-            <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
+            <p class="event__destination-description">${cities[0].description}.</p>
           </section>
         </section>
       </form>
@@ -244,17 +244,25 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
   };
 
+  setDeleteEditFormButtonClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__delete-btn').addEventListener('click', this.#clickHandler);
+  };
+
   setInnerEditPointHandlers = () => {
     this.#setDatepicker();
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.event__delete-btn').addEventListener('click', this.#clickHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerEditPointHandlers();
     this.setEditFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteEditFormButtonClickHandler(this._callback.click);
+    this.setCloseEditFormButtonClickHandler(this._callback.click);
   };
 
   static parsePointToState = (point) => (
@@ -265,8 +273,6 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
 
   static parseStateToPoint = (state) => {
     const point = {...state};
-
-    // данные нужные только в состоянии, удаление их
 
     return point;
   };

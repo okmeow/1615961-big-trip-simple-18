@@ -253,7 +253,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler); - вызывает ошибку
   };
 
-  setCloseCreatePointButtonClickHandler = (callback) => {
+  setCloseCreatePointClickHandler = (callback) => {
     this._callback.click = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
   };
@@ -269,6 +269,7 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
   _restoreHandlers = () => {
     this.setInnerCreatePointHandlers();
     this.setSubmitCreationFormHandler(this._callback.formSubmit);
+    this.setCloseCreatePointClickHandler(this._callback.click);
   };
 
   static parsePointToState = (point) => (
@@ -279,8 +280,6 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
 
   static parseStateToPoint = (state) => {
     const point = {...state};
-
-    // данные нужные только в состоянии, удаление их
 
     return point;
   };

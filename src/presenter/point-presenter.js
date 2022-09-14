@@ -74,6 +74,7 @@ export default class PointPresenter {
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
     this.#changeMode();
     this.#mode = Mode.EDITING;
+    this.#pointEditComponent.setDeleteEditFormButtonClickHandler(this.#handleDeletePointClick);
   };
 
   #replaceEditPointToPoint = () => {
@@ -99,5 +100,14 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escapeKeyDownHandler);
     this.#pointEditComponent.reset(this.#point);
     this.#replaceEditPointToPoint();
+  };
+
+  #handleDeletePointClick = () => {
+    console.log('handleDeletePointClick');
+    // this.#replacePointToEditPoint();
+    // this.#pointEditComponent.removeElement();
+    // this.#pointComponent.removeElement();
+    // this.destroy();
+    // Callback который удаляет форму редактирования элемента
   };
 }
