@@ -51,7 +51,7 @@ export default class AppPresenter {
 
     this.#newEventButtonComponent = new ButtonNewEventView();
 
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#cities[0], this.#offers, this.#tripPoints[0]);
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripPoints[0], this.#cities[0], this.#offers);
 
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 

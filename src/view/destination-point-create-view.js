@@ -37,7 +37,7 @@ const createOffersTemplate = (offers) => {
   return offersTemplate.join('');
 };
 
-const createNewPointTemplate = (city, offers, point) => {
+const createNewPointTemplate = (point, city, offers) => {
   const {description, name, pictures} = city;
   const {type, price, dateFrom, dateTo, tripDate} = point;
 
