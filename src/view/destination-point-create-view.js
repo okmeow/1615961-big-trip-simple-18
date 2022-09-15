@@ -184,11 +184,6 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this._callback.click();
   };
 
-  // #formSubmitHandler = (evt) => {
-  // evt.preventDefault();
-  // this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
-  // };
-
   #changeTypeHandler = (evt) => {
     evt.preventDefault();
 
@@ -248,14 +243,17 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     );
   };
 
-  setSubmitCreationFormHandler = (evt) => {
+  #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(this._state);
+    this._callback.formSubmit(TripDestinationPointCreateView.parseStateToPoint(this._state));
+  };
+
+  setCreateFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
   };
 
   setCloseCreatePointClickHandler = (callback) => {
     this._callback.click = callback;
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
   };
 
   setInnerCreatePointHandlers = () => {
@@ -264,11 +262,13 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
+    // console.log(this.element.querySelector('.event--edit'));
+    // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerCreatePointHandlers();
-    // this.setSubmitCreationFormHandler(this._callback.formSubmit);
+    this.setCreateFormSubmitHandler(this._callback.formSubmit);
     this.setCloseCreatePointClickHandler(this._callback.click);
   };
 

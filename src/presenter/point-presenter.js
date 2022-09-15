@@ -75,6 +75,7 @@ export default class PointPresenter {
     this.#changeMode();
     this.#mode = Mode.EDITING;
     this.#pointEditComponent.setDeleteEditFormButtonClickHandler(this.#handleDeletePointClick);
+    this.#pointEditComponent.setEditFormSubmitHandler(this.#handleSubmitPointClick);
   };
 
   #replaceEditPointToPoint = () => {
@@ -99,6 +100,11 @@ export default class PointPresenter {
   #handleCloseEditClick = () => {
     document.removeEventListener('keydown', this.#escapeKeyDownHandler);
     this.#pointEditComponent.reset(this.#point);
+    this.#replaceEditPointToPoint();
+  };
+
+  #handleSubmitPointClick = () => {
+    // Как сюда написать чтобы взять данные из состояния
     this.#replaceEditPointToPoint();
   };
 

@@ -61,6 +61,7 @@ export default class AppPresenter {
   #handleNewEventClick = () => {
     this.#renderNewPointForm();
     this.#tripNewPointCreateComponent.setCloseCreatePointClickHandler(this.#handleNewEventCloseClick);
+    this.#tripNewPointCreateComponent.setCreateFormSubmitHandler(this.#handleSubmitPointClick);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
   };
 
@@ -164,5 +165,10 @@ export default class AppPresenter {
     this.#renderSort();
     this.#renderTripItemWrapper();
     this.#renderPointList();
+  };
+
+  #handleSubmitPointClick = () => {
+    // console.log('нужный колбэк');
+    // this.#replaceEditPointToPoint();
   };
 }

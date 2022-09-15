@@ -234,10 +234,9 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     );
   };
 
-  // setEditFormSubmitHandler = (callback) => {
-  //   this._callback.formSubmit = callback;
-  //   this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
-  // };
+  setEditFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+  };
 
   setCloseEditFormButtonClickHandler = (callback) => {
     this._callback.click = callback;
@@ -256,11 +255,12 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
     this.element.querySelector('.event__delete-btn').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerEditPointHandlers();
-    // this.setEditFormSubmitHandler(this._callback.formSubmit);
+    this.setEditFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteEditFormButtonClickHandler(this._callback.click);
     this.setCloseEditFormButtonClickHandler(this._callback.click);
   };
