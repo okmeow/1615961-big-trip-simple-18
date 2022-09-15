@@ -219,7 +219,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         defaultDate: dateFrom,
         enableTime: true,
-        onInput: this.#changeDateFromHandler
+        onChange: this.#changeDateFromHandler
       }
     );
 
@@ -229,7 +229,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         defaultDate: dateTo,
         enableTime: true,
-        onInput: this.#changeDateToHandler
+        onChange: this.#changeDateToHandler
       }
     );
   };
