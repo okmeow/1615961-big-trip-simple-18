@@ -40,6 +40,18 @@ export default class AppPresenter {
     this.#tripOffersModel = tripOffersModel;
   }
 
+  get points() {
+    return this.#tripPointsModel.points;
+  }
+
+  get offers() {
+    return this.#tripOffersModel.offers;
+  }
+
+  get cities() {
+    return this.#destinationCitiesModel.cities;
+  }
+
   init = (point, offers, cities) => {
     this.#point = point;
     this.#offers = offers;
