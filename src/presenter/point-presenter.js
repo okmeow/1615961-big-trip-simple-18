@@ -19,6 +19,7 @@ export default class PointPresenter {
 
   #point = null;
   #offers = [];
+  #cities = [];
   #mode = Mode.DEFAULT;
 
   constructor(pointListContainer, changeData, changeMode) {
@@ -27,18 +28,18 @@ export default class PointPresenter {
     this.#changeMode = changeMode;
   }
 
-  init = (point, offers) => {
+  init = (point, offers, cities) => {
     this.#point = point;
     this.#offers = offers;
+    this.#cities = cities;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent = new TripDestinationPointView(point, offers);
-    this.#pointEditComponent = new TripDestinationPointEditView(point, offers);
+    this.#pointEditComponent = new TripDestinationPointEditView(point, offers, cities);
 
     this.#pointComponent.setShowEditFormButtonClickHandler(this.#handleOpenEditClick);
-    this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       return render(this.#pointComponent, this.#pointListContainer);
@@ -73,6 +74,8 @@ export default class PointPresenter {
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
     this.#changeMode();
     this.#mode = Mode.EDITING;
+    this.#pointEditComponent.setDeleteEditFormButtonClickHandler(this.#handleDeletePointClick);
+    this.#pointEditComponent.setEditFormSubmitHandler(this.#handleSubmitPointClick);
   };
 
   #replaceEditPointToPoint = () => {
@@ -91,11 +94,26 @@ export default class PointPresenter {
 
   #handleOpenEditClick = () => {
     this.#replacePointToEditPoint();
+    this.#pointEditComponent.setCloseEditFormButtonClickHandler(this.#handleCloseEditClick);
   };
 
   #handleCloseEditClick = () => {
     document.removeEventListener('keydown', this.#escapeKeyDownHandler);
     this.#pointEditComponent.reset(this.#point);
     this.#replaceEditPointToPoint();
+  };
+
+  #handleSubmitPointClick = () => {
+    // Как сюда написать чтобы взять данные из состояния
+    this.#replaceEditPointToPoint();
+  };
+
+  #handleDeletePointClick = () => {
+    // console.log('handleDeletePointClick');
+    // this.#replacePointToEditPoint();
+    // this.#pointEditComponent.removeElement();
+    // this.#pointComponent.removeElement();
+    // this.destroy();
+    // Callback который удаляет форму редактирования элемента
   };
 }
