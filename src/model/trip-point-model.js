@@ -1,15 +1,10 @@
 import {generateTripPoint} from '../mock/point-mock.js';
-import {allOffers} from '../mock/offers-mock.js';
+import Observable from '../framework/observable.js';
 
-export default class TripPointsModel {
+export default class TripPointsModel extends Observable {
   #points = Array.from({length: 5}, generateTripPoint);
-  #offers = allOffers;
 
   get tripPoints() {
     return this.#points;
-  }
-
-  get tripOffers() {
-    return this.#offers;
   }
 }

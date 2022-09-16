@@ -18,6 +18,7 @@ export default class AppPresenter {
   #fieldContainer = null;
   #destinationCitiesModel = null;
   #tripPointsModel = null;
+  #tripOffersModel = null;
   #tripNewPointCreateComponent = null;
   #newEventButtonComponent = null;
 
@@ -32,10 +33,11 @@ export default class AppPresenter {
   #offers = [];
   #cities = [];
 
-  constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
+  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel) {
     this.#fieldContainer = fieldContainer;
     this.#destinationCitiesModel = destinationCitiesModel;
     this.#tripPointsModel = tripPointsModel;
+    this.#tripOffersModel = tripOffersModel;
   }
 
   init = (point, offers, cities) => {
@@ -45,7 +47,7 @@ export default class AppPresenter {
 
     this.#cities = [...this.#destinationCitiesModel.tripCities];
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    this.#offers = [...this.#tripPointsModel.tripOffers];
+    this.#offers = [...this.#tripOffersModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
