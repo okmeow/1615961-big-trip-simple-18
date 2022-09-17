@@ -21,7 +21,7 @@ const createDestinationPointTemplate = (point, offers) => {
   const offersByType = offers.find((offer) => offer.type === point.type);
   // const offersSelected = offersByType.offers.filter((offer) => offers.includes(offer.id));
 
-  const date = tripDate !== null
+  const date = tripDate
     ? humanizeTaskDueDate(tripDate)
     : '';
 

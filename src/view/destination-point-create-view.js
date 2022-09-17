@@ -41,15 +41,15 @@ const createNewPointTemplate = (point, city, offers) => {
   const {description, name, pictures} = city;
   const {type, destination, price, dateFrom, dateTo, tripDate} = point;
 
-  const timeFrom = dateFrom !== null
+  const timeFrom = dateFrom
     ? humanizePointTime(dateFrom)
     : '';
 
-  const timeTo = dateTo !== null
+  const timeTo = dateTo
     ? humanizePointTime(dateTo)
     : '';
 
-  const date = tripDate !== null
+  const date = tripDate
     ? humanizeEditPointTime(tripDate)
     : '';
 
