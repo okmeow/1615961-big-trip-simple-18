@@ -39,7 +39,7 @@ const createOffersTemplate = (offers) => {
 
 const createNewPointTemplate = (point, city, offers) => {
   const {description, name, pictures} = city;
-  const {type, destination, price, dateFrom, dateTo, tripDate} = point;
+  const {type, destination, price, dateFrom, dateTo} = point;
 
   const timeFrom = dateFrom
     ? humanizePointTime(dateFrom)
@@ -49,8 +49,8 @@ const createNewPointTemplate = (point, city, offers) => {
     ? humanizePointTime(dateTo)
     : '';
 
-  const date = tripDate
-    ? humanizeEditPointTime(tripDate)
+  const date = dateFrom
+    ? humanizeEditPointTime(dateFrom)
     : '';
 
   const pointTypeOffer = offers

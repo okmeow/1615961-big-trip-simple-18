@@ -13,9 +13,8 @@ const generateRandomTransportType = () => {
 export const generateTripPoint = () => ({
   id: nanoid(),
   type: generateRandomTransportType(),
-  tripDate: `2022-06-${getRandomInteger(10, 30)}T11:22:13.375Z`,
-  dateFrom: `2022-06-${getRandomInteger(10, 30)}T${getRandomInteger(10, 15)}:${getRandomInteger(10, 59)}:13.375Z`,
-  dateTo: `2022-06-${getRandomInteger(10, 30)}T${getRandomInteger(15, 20)}:${getRandomInteger(10, 59)}:13.375Z`,
+  dateFrom: `2022-06-${getRandomInteger(10, 20)}T${getRandomInteger(10, 15)}:${getRandomInteger(10, 59)}:13.375Z`,
+  dateTo: `2022-06-${getRandomInteger(20, 30)}T${getRandomInteger(15, 20)}:${getRandomInteger(10, 59)}:13.375Z`,
   price: getRandomInteger(10, 1000),
   destination: generateRandomCity(),
   offers: [getRandomInteger(0, 1)],
