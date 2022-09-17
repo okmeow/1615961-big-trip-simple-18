@@ -14,13 +14,13 @@ export default class AppPresenter {
   #tripItemComponent = new ContentContainerItemView();
   #emptyPointListMessageComponent = new EmptyPointListMessageView();
   #sortComponent = new SortView();
+  #newEventButtonComponent = new ButtonNewEventView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
   #tripPointsModel = null;
   #tripOffersModel = null;
   #tripNewPointCreateComponent = null;
-  #newEventButtonComponent = null;
 
   #tripCities = [];
   #tripPoints = [];
@@ -41,31 +41,29 @@ export default class AppPresenter {
   }
 
   get points() {
-    return this.#tripPointsModel.points;
+    return this.#tripPointsModel.tripPoints;
   }
 
   get offers() {
-    return this.#tripOffersModel.offers;
+    return this.#tripOffersModel.tripOffers;
   }
 
   get cities() {
-    return this.#destinationCitiesModel.cities;
+    return this.#destinationCitiesModel.tripCities;
   }
 
-  init = (point, offers, cities) => {
-    this.#point = point;
-    this.#offers = offers;
-    this.#cities = cities;
+  init = () => {
+    // this.#point = point;
+    // this.#offers = offers;
+    // this.#cities = cities;
 
-    this.#cities = [...this.#destinationCitiesModel.tripCities];
-    this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    this.#offers = [...this.#tripOffersModel.tripOffers];
+    // this.#cities = [...this.#destinationCitiesModel.tripCities];
+    // this.#tripPoints = [...this.#tripPointsModel.tripPoints];
+    // this.#offers = [...this.#tripOffersModel.tripOffers];
 
     this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
 
-    this.#newEventButtonComponent = new ButtonNewEventView();
-
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripPoints[0], this.#cities[0], this.#offers);
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.points[0], this.cities[0], this.offers);
 
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
@@ -141,7 +139,7 @@ export default class AppPresenter {
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateArrayElement(this.#tripPoints, updatedPoint);
     this.#sourcedTripPoints = updateArrayElement(this.#sourcedTripPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#offers, this.#cities);
   };
 
   #renderNewPointForm = () => {
@@ -155,8 +153,8 @@ export default class AppPresenter {
   };
 
   #renderPointList = () => {
-    for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i], this.#offers, this.#cities);
+    for (let i = 0; i < this.points.length; i++) {
+      this.#renderPoint(this.points[i], this.offers, this.cities);
     }
   };
 
@@ -172,7 +170,7 @@ export default class AppPresenter {
   #renderContent = () => {
     this.#renderCommonWrapper();
 
-    if(this.#cities.length === 0) {
+    if(this.cities.length === 0) {
       return this.#renderNoPointsMessage();
     }
 

@@ -205,7 +205,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   };
 
   #changeDateToHandler = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: userDate
     });
   };

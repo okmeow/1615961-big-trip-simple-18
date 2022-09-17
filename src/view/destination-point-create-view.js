@@ -262,8 +262,8 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
-    // console.log(this.element.querySelector('.event--edit'));
-    // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+    // console.log(document.querySelector('.event--edit'));
+    // document.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   _restoreHandlers = () => {
