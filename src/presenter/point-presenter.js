@@ -2,6 +2,7 @@ import {render, replace, remove} from '../framework/render.js';
 import {isEscapeKey} from '../utils/utils.js';
 import TripDestinationPointView from '../view/destination-point-view.js';
 import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
+import {UserAction, UpdateType} from '../mock/const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -103,8 +104,13 @@ export default class PointPresenter {
     this.#replaceEditPointToPoint();
   };
 
-  #handleSubmitPointClick = () => {
+  #handleSubmitPointClick = (point) => {
     // Как сюда написать чтобы взять данные из состояния
+    this.#changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point, // or points
+    );
     this.#replaceEditPointToPoint();
   };
 

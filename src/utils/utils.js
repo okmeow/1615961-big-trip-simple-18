@@ -15,20 +15,6 @@ const humanizeTaskDueDate = (time) => dayjs(time).format('DD MMMM');
 const humanizePointTime = (time) => dayjs(time).format('hh:mm');
 const humanizeEditPointTime = (time) => dayjs(time).format('DD/MM/YY');
 
-const updateArrayElement = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
-};
-
 const getWeightForNullDate = (dateA, dateB) => {
   if (dateA === null && dateB === null) {
     return 0;
@@ -55,4 +41,4 @@ const sortPointPriceDown = (pointA, pointB) => pointB.price - pointA.price;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomValue, humanizeTaskDueDate, humanizePointTime, humanizeEditPointTime, updateArrayElement, sortPointDateUp, sortPointPriceDown, isEscapeKey};
+export {getRandomInteger, getRandomValue, humanizeTaskDueDate, humanizePointTime, humanizeEditPointTime, sortPointDateUp, sortPointPriceDown, isEscapeKey};
