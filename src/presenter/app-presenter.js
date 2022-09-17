@@ -13,7 +13,7 @@ export default class AppPresenter {
   #tripContentContainerListComponent = new ContentContainerListView();
   #tripItemComponent = new ContentContainerItemView();
   #emptyPointListMessageComponent = new EmptyPointListMessageView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #newEventButtonComponent = new ButtonNewEventView();
 
   #fieldContainer = null;
@@ -57,7 +57,7 @@ export default class AppPresenter {
     this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.points[0], this.cities[0], this.offers);
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
-    this.#renderContent();
+    this.#renderApp();
   };
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -78,16 +78,45 @@ export default class AppPresenter {
 
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this.#pointPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this.#clearApp();
+        this.#renderApp();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this.#clearApp({resetSortType: true});
+        this.#clearApp();
         break;
     }
+  };
+
+  #clearApp = ({resetSortType = false} = {}) => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#emptyPointListMessageComponent);
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DATE;
+    }
+  };
+
+  #renderApp = () => {
+    const points = this.points;
+    const pointsCount = points.length;
+
+    this.#renderCommonWrapper();
+
+    // if(this.cities.length === 0) {
+    if(pointsCount === 0) {
+      return this.#renderNoPointsMessage();
+    }
+
+    this.#renderSort();
+    this.#renderTripItemWrapper();
+    this.#renderPointList();
   };
 
   #handleNewEventClick = () => {
@@ -128,11 +157,12 @@ export default class AppPresenter {
     }
 
     this.#currentSortType = sortType;
-    this.#clearPointList();
-    this.#renderPointList();
+    this.#clearApp();
+    this.#renderApp();
   };
 
   #renderSort = () => {
+    this.#sortComponent = new SortView(this.#currentSortType);
     render(this.#sortComponent, this.#tripContentContainerListComponent.element);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
@@ -157,25 +187,8 @@ export default class AppPresenter {
     }
   };
 
-  #clearPointList = () => {
-    this.#pointPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointPresenter.clear();
-  };
-
   #renderNoPointsMessage = () => {
     render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
-  };
-
-  #renderContent = () => {
-    this.#renderCommonWrapper();
-
-    if(this.cities.length === 0) {
-      return this.#renderNoPointsMessage();
-    }
-
-    this.#renderSort();
-    this.#renderTripItemWrapper();
-    this.#renderPointList();
   };
 
   #handleSubmitPointClick = () => {
