@@ -105,10 +105,15 @@ export default class PointPresenter {
   };
 
   #handleSubmitPointClick = (point) => {
-    // Как сюда написать чтобы взять данные из состояния
+  //   Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию, а значит требуют перерисовки списка
+  //   const isMinorUpdate =
+  //     !isDatesEqual(this.#task.dueDate, update.dueDate) ||
+  //     isTaskRepeating(this.#task.repeating) !== isTaskRepeating(update.repeating);
+
     this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
+      //     isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       point, // or points
     );
     this.#replaceEditPointToPoint();
