@@ -179,9 +179,9 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     );
   };
 
-  #clickHandler = (evt) => {
+  #closeClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.click();
+    this._callback.closeClick();
   };
 
   #changeTypeHandler = (evt) => {
@@ -254,7 +254,8 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
   };
 
   setCloseCreatePointClickHandler = (callback) => {
-    this._callback.click = callback;
+    this._callback.closeClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#closeClickHandler);
   };
 
   setInnerCreatePointHandlers = () => {
@@ -262,13 +263,13 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#closeClickHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerCreatePointHandlers();
     this.setCreateFormSubmitHandler(this._callback.formSubmit);
-    this.setCloseCreatePointClickHandler(this._callback.click);
+    this.setCloseCreatePointClickHandler(this._callback.closeClick);
   };
 
   static parsePointToState = (point) => (
