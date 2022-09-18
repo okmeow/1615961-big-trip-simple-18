@@ -9,6 +9,7 @@ import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
 import {sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
+import {nanoid} from 'nanoid';
 import {SortType, UpdateType, UserAction, FilterType} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -219,7 +220,7 @@ export default class AppPresenter {
     this.#changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
-      point,
+      {id: nanoid(), ...point},
     );
 
     this.#replaceCreatePointToPoint();
