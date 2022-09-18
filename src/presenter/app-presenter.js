@@ -8,6 +8,7 @@ import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
 import {sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
+import {filter} from '../utils/filter.js';
 import {SortType, UpdateType, UserAction} from '../mock/const.js';
 
 export default class AppPresenter {
@@ -21,6 +22,7 @@ export default class AppPresenter {
   #destinationCitiesModel = null;
   #tripPointsModel = null;
   #tripOffersModel = null;
+  #filterModel = null;
   #tripNewPointCreateComponent = null;
   #changeData = null;
   #pointComponent = null;
@@ -28,25 +30,31 @@ export default class AppPresenter {
   #pointPresenter = new Map();
   #currentSortType = SortType.DATE;
 
-  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, changeData) {
+  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, filterModel, changeData) {
     this.#fieldContainer = fieldContainer;
     this.#changeData = changeData;
     this.#destinationCitiesModel = destinationCitiesModel;
     this.#tripPointsModel = tripPointsModel;
     this.#tripOffersModel = tripOffersModel;
+    this.#filterModel = filterModel;
 
     this.#tripPointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    const filterType = this.#filterModel.filter;
+    const points = this.#tripPointsModel.tripPoints;
+    const filteredPoints = filter[filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.DATE:
-        return [...this.#tripPointsModel.tripPoints].sort(sortPointDateUp);
+        return filteredPoints.sort(sortPointDateUp);
       case SortType.PRICE:
-        return [...this.#tripPointsModel.tripPoints].sort(sortPointPriceDown);
+        return filteredPoints.sort(sortPointPriceDown);
     }
 
-    return this.#tripPointsModel.tripPoints;
+    return filteredPoints;
   }
 
   get offers() {
@@ -91,7 +99,7 @@ export default class AppPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearApp({resetSortType: true});
-        this.#clearApp();
+        this.#renderApp();
         break;
     }
   };

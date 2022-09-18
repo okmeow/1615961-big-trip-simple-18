@@ -16,7 +16,7 @@ const tripCitiesModel = new CityModel();
 const tripPointsModel = new TripPointsModel();
 const tripOffersModel = new TripOffersModel();
 const filterModel = new FilterModel();
-const appPresenter = new AppPresenter(siteTripEventsElement, tripCitiesModel, tripPointsModel, tripOffersModel);
+const appPresenter = new AppPresenter(siteTripEventsElement, tripCitiesModel, tripPointsModel, tripOffersModel, filterModel);
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, tripPointsModel);
 
 render(new ButtonNewEventView(), siteButtonNewEventWrapperElement);
