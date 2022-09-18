@@ -18,6 +18,12 @@ const SortType = {
   DATE: 'date',
 };
 
+const FilterType = {
+  DEFAULT: 'default',
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+};
+
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
@@ -30,4 +36,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export {CitiesDescription, CitiesToTrip, PointTypes, idArray, SortType, UpdateType, UserAction};
+export {CitiesDescription, CitiesToTrip, PointTypes, idArray, SortType, UpdateType, UserAction, FilterType};
