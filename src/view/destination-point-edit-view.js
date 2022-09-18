@@ -1,7 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 import {PointTypes} from '../mock/const.js';
-import dayjs from 'dayjs';
 import he from 'he';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -207,15 +206,13 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
 
   #changeDateFromHandler = ([userDate]) => {
     this._setState({
-      // dateFrom: userDate
-      dateFrom: dayjs(userDate).format('DD/MM/YY HH:mm')
+      dateFrom: userDate
     });
   };
 
   #changeDateToHandler = ([userDate]) => {
     this._setState({
-      // dateTo: userDate
-      dateTo: dayjs(userDate).format('DD/MM/YY HH:mm')
+      dateTo: userDate
     });
   };
 
