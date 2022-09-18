@@ -114,12 +114,11 @@ export default class PointPresenter {
     this.#replaceEditPointToPoint();
   };
 
-  #handleDeletePointClick = () => {
-    // console.log('handleDeletePointClick');
-    // this.#replacePointToEditPoint();
-    // this.#pointEditComponent.removeElement();
-    // this.#pointComponent.removeElement();
-    // this.destroy();
-    // Callback который удаляет форму редактирования элемента
+  #handleDeletePointClick = (point) => {
+    this.#changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 }
