@@ -1,7 +1,8 @@
-import {remove, render} from '../framework/render.js';
+import {remove, render, replace} from '../framework/render.js';
 import ContentContainerListView from '../view/content-container-view.js';
 import ContentContainerItemView from '../view/wrapper-content-container-view.js';
 import TripDestinationPointCreateView from '../view/destination-point-create-view.js';
+import TripDestinationPointView from '../view/destination-point-view.js';
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
@@ -21,12 +22,15 @@ export default class AppPresenter {
   #tripPointsModel = null;
   #tripOffersModel = null;
   #tripNewPointCreateComponent = null;
+  #changeData = null;
+  #pointComponent = null;
 
   #pointPresenter = new Map();
   #currentSortType = SortType.DATE;
 
-  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel) {
+  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, changeData) {
     this.#fieldContainer = fieldContainer;
+    this.#changeData = changeData;
     this.#destinationCitiesModel = destinationCitiesModel;
     this.#tripPointsModel = tripPointsModel;
     this.#tripOffersModel = tripOffersModel;
@@ -54,6 +58,7 @@ export default class AppPresenter {
   }
 
   init = () => {
+    this.#pointComponent = new TripDestinationPointView(this.points, this.offers);
     this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.points[0], this.cities[0], this.offers);
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
@@ -191,8 +196,19 @@ export default class AppPresenter {
     render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
   };
 
-  #handleSubmitPointClick = () => {
-    // console.log('нужный колбэк');
-    // this.#replaceEditPointToPoint();
+  #replaceCreatePointToPoint = () => {
+    replace(this.#pointComponent, this.#tripNewPointCreateComponent);
+    document.removeEventListener('keydown', this.#escapeKeyDownHandler);
+  };
+
+  #handleSubmitPointClick = (point) => {
+
+    this.#changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+
+    this.#replaceCreatePointToPoint();
   };
 }
