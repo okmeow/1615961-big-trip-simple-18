@@ -8,6 +8,14 @@ import FilterModel from './model/filter-model.js';
 import TripPointsModel from './model/trip-point-model.js';
 import TripOffersModel from './model/offers-model.js';
 
+const filters = [
+  {
+    type: 'all',
+    name: 'ALL',
+    count: 0,
+  },
+];
+
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteTripEventsElement = document.querySelector('.trip-events');
 const siteButtonNewEventWrapperElement = document.querySelector('.trip-main');
@@ -19,7 +27,7 @@ const filterModel = new FilterModel();
 const appPresenter = new AppPresenter(siteTripEventsElement, tripCitiesModel, tripPointsModel, tripOffersModel);
 
 render(new ButtonNewEventView(), siteButtonNewEventWrapperElement);
-render(new FiltersView(), siteFilterElement);
+render(new FiltersView(filters, 'all'), siteFilterElement);
 render(new ContentContainerView(), siteTripEventsElement);
 
 appPresenter.init();
