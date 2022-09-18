@@ -142,10 +142,12 @@ export default class AppPresenter {
     this.#tripNewPointCreateComponent.setCloseCreatePointClickHandler(this.#handleNewEventCloseClick);
     this.#tripNewPointCreateComponent.setCreateFormSubmitHandler(this.#handleSubmitPointClick);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
+    document.querySelector('.trip-main__event-add-btn').disabled = true;
   };
 
   #handleNewEventCloseClick = () => {
     remove(this.#tripNewPointCreateComponent);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 
   #escapeKeyDownHandler = (evt) => {
@@ -153,6 +155,7 @@ export default class AppPresenter {
       evt.preventDefault();
       this.#tripNewPointCreateComponent.reset(this.points);
       this.#deleteNewEventForm();
+      document.querySelector('.trip-main__event-add-btn').disabled = false;
     }
   };
 
