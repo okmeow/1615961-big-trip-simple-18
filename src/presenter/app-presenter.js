@@ -9,12 +9,12 @@ import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
 import {sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
-import {SortType, UpdateType, UserAction} from '../mock/const.js';
+import {SortType, UpdateType, UserAction, FilterType} from '../mock/const.js';
 
 export default class AppPresenter {
   #tripContentContainerListComponent = new ContentContainerListView();
   #tripItemComponent = new ContentContainerItemView();
-  #emptyPointListMessageComponent = new EmptyPointListMessageView();
+  #emptyPointListMessageComponent = null;
   #sortComponent = null;
   #newEventButtonComponent = new ButtonNewEventView();
 
@@ -29,6 +29,7 @@ export default class AppPresenter {
 
   #pointPresenter = new Map();
   #currentSortType = SortType.DATE;
+  #filterType = FilterType.EVERYTHING;
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, filterModel, changeData) {
     this.#fieldContainer = fieldContainer;
@@ -43,9 +44,9 @@ export default class AppPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#tripPointsModel.tripPoints;
-    const filteredPoints = filter[filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SortType.DATE:
@@ -109,7 +110,10 @@ export default class AppPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
-    remove(this.#emptyPointListMessageComponent);
+
+    if (this.#emptyPointListMessageComponent) {
+      remove(this.#emptyPointListMessageComponent);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.DATE;
@@ -201,6 +205,7 @@ export default class AppPresenter {
   };
 
   #renderNoPointsMessage = () => {
+    this.#emptyPointListMessageComponent = new EmptyPointListMessageView(this.#filterType);
     render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
   };
 
