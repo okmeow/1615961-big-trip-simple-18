@@ -225,7 +225,7 @@ export default class AppPresenter {
       UpdateType.MINOR,
       {id: nanoid(), ...point},
     );
-
-    this.#replaceCreatePointToPoint();
+    remove(this.#tripNewPointCreateComponent);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 }
