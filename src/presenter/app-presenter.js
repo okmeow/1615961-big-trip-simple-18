@@ -220,7 +220,7 @@ export default class AppPresenter {
 
   #handleSubmitPointClick = (point) => {
 
-    this.#changeData(
+    this.#handleViewAction(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       {id: nanoid(), ...point},
