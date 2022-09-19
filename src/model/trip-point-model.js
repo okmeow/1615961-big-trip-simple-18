@@ -2,7 +2,19 @@ import {generateTripPoint} from '../mock/point-mock.js';
 import Observable from '../framework/observable.js';
 
 export default class TripPointsModel extends Observable {
+  #pointsApiService = null;
   #points = Array.from({length: 5}, generateTripPoint);
+
+
+  constructor(pointsApiService) {
+    super();
+    this.#pointsApiService = pointsApiService;
+
+    this.#pointsApiService.points.then((points) => {
+      console.log(points);
+
+    });
+  }
 
   get tripPoints() {
     return this.#points;
