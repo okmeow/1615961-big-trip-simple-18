@@ -1,61 +1,140 @@
-import {remove, render} from '../framework/render.js';
+import {remove, render, replace} from '../framework/render.js';
 import ContentContainerListView from '../view/content-container-view.js';
 import ContentContainerItemView from '../view/wrapper-content-container-view.js';
 import TripDestinationPointCreateView from '../view/destination-point-create-view.js';
+import TripDestinationPointView from '../view/destination-point-view.js';
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
 import PointPresenter from './point-presenter.js';
-import {updateArrayElement, sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
-import {SortType} from '../mock/const.js';
+import {sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
+import {filter} from '../utils/filter.js';
+import {nanoid} from 'nanoid';
+import {SortType, UpdateType, UserAction, FilterType} from '../mock/const.js';
 
 export default class AppPresenter {
   #tripContentContainerListComponent = new ContentContainerListView();
   #tripItemComponent = new ContentContainerItemView();
-  #emptyPointListMessageComponent = new EmptyPointListMessageView();
-  #sortComponent = new SortView();
+  #emptyPointListMessageComponent = null;
+  #sortComponent = null;
+  #newEventButtonComponent = new ButtonNewEventView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
   #tripPointsModel = null;
+  #tripOffersModel = null;
+  #filterModel = null;
   #tripNewPointCreateComponent = null;
-  #newEventButtonComponent = null;
+  #changeData = null;
+  #pointComponent = null;
 
-  #tripCities = [];
-  #tripPoints = [];
-  #tripOffers = [];
   #pointPresenter = new Map();
-  #currentSortType = SortType.DEFAULT;
-  #sourcedTripPoints = [];
+  #currentSortType = SortType.DATE;
+  #filterType = FilterType.EVERYTHING;
 
-  #point = null;
-  #offers = [];
-  #cities = [];
-
-  constructor (fieldContainer, destinationCitiesModel, tripPointsModel) {
+  constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, filterModel, changeData) {
     this.#fieldContainer = fieldContainer;
+    this.#changeData = changeData;
     this.#destinationCitiesModel = destinationCitiesModel;
     this.#tripPointsModel = tripPointsModel;
+    this.#tripOffersModel = tripOffersModel;
+    this.#filterModel = filterModel;
+
+    this.#tripPointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  init = (point, offers, cities) => {
-    this.#point = point;
-    this.#offers = offers;
-    this.#cities = cities;
+  get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#tripPointsModel.tripPoints;
+    const filteredPoints = filter[this.#filterType](points);
 
-    this.#cities = [...this.#destinationCitiesModel.tripCities];
-    this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    this.#offers = [...this.#tripPointsModel.tripOffers];
+    switch (this.#currentSortType) {
+      case SortType.DATE:
+        return filteredPoints.sort(sortPointDateUp);
+      case SortType.PRICE:
+        return filteredPoints.sort(sortPointPriceDown);
+    }
 
-    this.#sourcedTripPoints = [...this.#tripPoints.sort(sortPointDateUp)];
+    return filteredPoints;
+  }
 
-    this.#newEventButtonComponent = new ButtonNewEventView();
+  get offers() {
+    return this.#tripOffersModel.tripOffers;
+  }
 
-    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.#tripPoints[0], this.#cities[0], this.#offers);
+  get cities() {
+    return this.#destinationCitiesModel.tripCities;
+  }
 
+  init = () => {
+    this.#pointComponent = new TripDestinationPointView(this.points, this.offers);
+    this.#tripNewPointCreateComponent = new TripDestinationPointCreateView(this.points[0], this.cities[0], this.offers);
     this.#newEventButtonComponent.setNewEventButtonClickHandler(this.#handleNewEventClick);
 
-    this.#renderContent();
+    this.#renderApp();
+  };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#tripPointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#tripPointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#tripPointsModel.deletePoint(updateType, update);
+        break;
+    }
+  };
+
+  #handleModelEvent = (updateType, data) => {
+
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        this.#clearApp();
+        this.#renderApp();
+        break;
+      case UpdateType.MAJOR:
+        this.#clearApp({resetSortType: true});
+        this.#renderApp();
+        break;
+    }
+  };
+
+  #clearApp = ({resetSortType = false} = {}) => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+
+    remove(this.#sortComponent);
+
+    if (this.#emptyPointListMessageComponent) {
+      remove(this.#emptyPointListMessageComponent);
+    }
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DATE;
+    }
+  };
+
+  #renderApp = () => {
+    const points = this.points;
+    const pointsCount = points.length;
+
+    this.#renderCommonWrapper();
+
+    // if(this.cities.length === 0) {
+    if(pointsCount === 0) {
+      return this.#renderNoPointsMessage();
+    }
+
+    this.#renderSort();
+    this.#renderTripItemWrapper();
+    this.#renderPointList();
   };
 
   #handleNewEventClick = () => {
@@ -63,17 +142,20 @@ export default class AppPresenter {
     this.#tripNewPointCreateComponent.setCloseCreatePointClickHandler(this.#handleNewEventCloseClick);
     this.#tripNewPointCreateComponent.setCreateFormSubmitHandler(this.#handleSubmitPointClick);
     document.addEventListener('keydown', this.#escapeKeyDownHandler);
+    document.querySelector('.trip-main__event-add-btn').disabled = true;
   };
 
   #handleNewEventCloseClick = () => {
     remove(this.#tripNewPointCreateComponent);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 
   #escapeKeyDownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      this.#tripNewPointCreateComponent.reset(this.#point);
+      this.#tripNewPointCreateComponent.reset(this.points);
       this.#deleteNewEventForm();
+      document.querySelector('.trip-main__event-add-btn').disabled = false;
     }
   };
 
@@ -90,32 +172,18 @@ export default class AppPresenter {
     render(this.#tripItemComponent, this.#tripContentContainerListComponent.element);
   };
 
-  #sortPoints = (sortType) => {
-    switch (sortType) {
-      case SortType.DATE:
-        this.#tripPoints.sort(sortPointDateUp);
-        break;
-      case SortType.PRICE:
-        this.#tripPoints.sort(sortPointPriceDown);
-        break;
-      default:
-        this.#tripPoints = [...this.#sourcedTripPoints];
-    }
-
-    this.#currentSortType = sortType;
-  };
-
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
 
-    this.#sortPoints(sortType);
-    this.#clearPointList();
-    this.#renderPointList();
+    this.#currentSortType = sortType;
+    this.#clearApp();
+    this.#renderApp();
   };
 
   #renderSort = () => {
+    this.#sortComponent = new SortView(this.#currentSortType);
     render(this.#sortComponent, this.#tripContentContainerListComponent.element);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
@@ -124,51 +192,40 @@ export default class AppPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  #handlePointChange = (updatedPoint) => {
-    this.#tripPoints = updateArrayElement(this.#tripPoints, updatedPoint);
-    this.#sourcedTripPoints = updateArrayElement(this.#sourcedTripPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
-  };
-
   #renderNewPointForm = () => {
     render(this.#tripNewPointCreateComponent, this.#tripItemComponent.element);
   };
 
   #renderPoint = (point, offers, cities) => {
-    const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handlePointChange, this.#handleModeChange);
+    const pointPresenter = new PointPresenter(this.#tripContentContainerListComponent.element, this.#handleViewAction, this.#handleModeChange);
     pointPresenter.init(point, offers, cities);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #renderPointList = () => {
-    for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i], this.#offers, this.#cities);
+    for (let i = 0; i < this.points.length; i++) {
+      this.#renderPoint(this.points[i], this.offers, this.cities);
     }
-  };
-
-  #clearPointList = () => {
-    this.#pointPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointPresenter.clear();
   };
 
   #renderNoPointsMessage = () => {
+    this.#emptyPointListMessageComponent = new EmptyPointListMessageView(this.#filterType);
     render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
   };
 
-  #renderContent = () => {
-    this.#renderCommonWrapper();
-
-    if(this.#cities.length === 0) {
-      return this.#renderNoPointsMessage();
-    }
-
-    this.#renderSort();
-    this.#renderTripItemWrapper();
-    this.#renderPointList();
+  #replaceCreatePointToPoint = () => {
+    replace(this.#pointComponent, this.#tripNewPointCreateComponent);
+    document.removeEventListener('keydown', this.#escapeKeyDownHandler);
   };
 
-  #handleSubmitPointClick = () => {
-    // console.log('нужный колбэк');
-    // this.#replaceEditPointToPoint();
+  #handleSubmitPointClick = (point) => {
+
+    this.#handleViewAction(
+      UserAction.ADD_POINT,
+      UpdateType.MINOR,
+      {id: nanoid(), ...point},
+    );
+    remove(this.#tripNewPointCreateComponent);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 }

@@ -1,6 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizeEditPointTime, humanizePointTime} from '../utils/utils.js';
 import {PointTypes} from '../mock/const.js';
+import he from 'he';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -38,18 +39,18 @@ const createOffersTemplate = (offers) => {
 };
 
 const createDestinationPointEditTemplate = (point, offers, cities) => {
-  const {type, price, destination, dateFrom, dateTo, tripDate} = point;
+  const {type, price, destination, dateFrom, dateTo} = point;
 
-  const timeFrom = dateFrom !== null
+  const timeFrom = dateFrom
     ? humanizePointTime(dateFrom)
     : '';
 
-  const timeTo = dateTo !== null
+  const timeTo = dateTo
     ? humanizePointTime(dateTo)
     : '';
 
-  const date = tripDate !== null
-    ? humanizeEditPointTime(tripDate)
+  const date = dateFrom
+    ? humanizeEditPointTime(dateFrom)
     : '';
 
   const pointTypeOffer = offers
@@ -81,7 +82,7 @@ const createDestinationPointEditTemplate = (point, offers, cities) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination)}" list="destination-list-1">
             <datalist id="destination-list-1">
               <option value="Amsterdam"></option>
               <option value="Geneva"></option>
@@ -100,7 +101,7 @@ const createDestinationPointEditTemplate = (point, offers, cities) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" min="1" step="1" value="${price}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn event__delete-btn" type="reset">Delete</button>
@@ -170,6 +171,11 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this._callback.click();
   };
 
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(TripDestinationPointEditView.parseStateToPoint(this._state));
+  };
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(TripDestinationPointEditView.parseStateToPoint(this._state));
@@ -199,13 +205,13 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   };
 
   #changeDateFromHandler = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateFrom: userDate
     });
   };
 
   #changeDateToHandler = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: userDate
     });
   };
@@ -236,6 +242,7 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
 
   setEditFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   setCloseEditFormButtonClickHandler = (callback) => {
@@ -244,8 +251,8 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
   };
 
   setDeleteEditFormButtonClickHandler = (callback) => {
-    this._callback.click = callback;
-    this.element.querySelector('.event__delete-btn').addEventListener('click', this.#clickHandler);
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__delete-btn').addEventListener('click', this.#formDeleteClickHandler);
   };
 
   setInnerEditPointHandlers = () => {
@@ -254,14 +261,12 @@ export default class TripDestinationPointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
-    this.element.querySelector('.event__delete-btn').addEventListener('click', this.#clickHandler);
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerEditPointHandlers();
     this.setEditFormSubmitHandler(this._callback.formSubmit);
-    this.setDeleteEditFormButtonClickHandler(this._callback.click);
+    this.setDeleteEditFormButtonClickHandler(this._callback.deleteClick);
     this.setCloseEditFormButtonClickHandler(this._callback.click);
   };
 

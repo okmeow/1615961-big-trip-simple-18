@@ -2,6 +2,7 @@ import {render, replace, remove} from '../framework/render.js';
 import {isEscapeKey} from '../utils/utils.js';
 import TripDestinationPointView from '../view/destination-point-view.js';
 import TripDestinationPointEditView from '../view/destination-point-edit-view.js';
+import {UserAction, UpdateType} from '../mock/const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -103,17 +104,26 @@ export default class PointPresenter {
     this.#replaceEditPointToPoint();
   };
 
-  #handleSubmitPointClick = () => {
-    // Как сюда написать чтобы взять данные из состояния
+  #handleSubmitPointClick = (point) => {
+  //   Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию, а значит требуют перерисовки списка
+  //   const isMinorUpdate =
+  //     !isDatesEqual(this.#task.dueDate, update.dueDate) ||
+  //     isTaskRepeating(this.#task.repeating) !== isTaskRepeating(update.repeating);
+
+    this.#changeData(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      //     isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      point, // or points
+    );
     this.#replaceEditPointToPoint();
   };
 
-  #handleDeletePointClick = () => {
-    // console.log('handleDeletePointClick');
-    // this.#replacePointToEditPoint();
-    // this.#pointEditComponent.removeElement();
-    // this.#pointComponent.removeElement();
-    // this.destroy();
-    // Callback который удаляет форму редактирования элемента
+  #handleDeletePointClick = (point) => {
+    this.#changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 }

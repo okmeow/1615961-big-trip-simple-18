@@ -16,13 +16,13 @@ const createOffersTemplate = (offer) => {
 };
 
 const createDestinationPointTemplate = (point, offers) => {
-  const {type, tripDate, price, destination, dateFrom, dateTo} = point;
+  const {type, price, destination, dateFrom, dateTo} = point;
 
   const offersByType = offers.find((offer) => offer.type === point.type);
   // const offersSelected = offersByType.offers.filter((offer) => offers.includes(offer.id));
 
-  const date = tripDate !== null
-    ? humanizeTaskDueDate(tripDate)
+  const date = dateFrom
+    ? humanizeTaskDueDate(dateFrom)
     : '';
 
   const timeFrom = dateFrom ? humanizePointTime(dateFrom) : '';

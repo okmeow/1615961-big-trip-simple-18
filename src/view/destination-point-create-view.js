@@ -39,18 +39,18 @@ const createOffersTemplate = (offers) => {
 
 const createNewPointTemplate = (point, city, offers) => {
   const {description, name, pictures} = city;
-  const {type, destination, price, dateFrom, dateTo, tripDate} = point;
+  const {type, destination, price, dateFrom, dateTo} = point;
 
-  const timeFrom = dateFrom !== null
+  const timeFrom = dateFrom
     ? humanizePointTime(dateFrom)
     : '';
 
-  const timeTo = dateTo !== null
+  const timeTo = dateTo
     ? humanizePointTime(dateTo)
     : '';
 
-  const date = tripDate !== null
-    ? humanizeEditPointTime(tripDate)
+  const date = dateFrom
+    ? humanizeEditPointTime(dateFrom)
     : '';
 
   const pointTypeOffer = offers
@@ -102,7 +102,7 @@ const createNewPointTemplate = (point, city, offers) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" min="1" step="1" value="${price}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -179,9 +179,9 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     );
   };
 
-  #clickHandler = (evt) => {
+  #closeClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.click();
+    this._callback.closeClick();
   };
 
   #changeTypeHandler = (evt) => {
@@ -250,10 +250,12 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
 
   setCreateFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
+    document.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
   };
 
   setCloseCreatePointClickHandler = (callback) => {
-    this._callback.click = callback;
+    this._callback.closeClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#closeClickHandler);
   };
 
   setInnerCreatePointHandlers = () => {
@@ -261,15 +263,13 @@ export default class TripDestinationPointCreateView extends AbstractStatefulView
     this.element.querySelector('.event__type-group').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#changeDestinationInputHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#changePriceHandler);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#clickHandler);
-    // console.log(this.element.querySelector('.event--edit'));
-    // this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#closeClickHandler);
   };
 
   _restoreHandlers = () => {
     this.setInnerCreatePointHandlers();
     this.setCreateFormSubmitHandler(this._callback.formSubmit);
-    this.setCloseCreatePointClickHandler(this._callback.click);
+    this.setCloseCreatePointClickHandler(this._callback.closeClick);
   };
 
   static parsePointToState = (point) => (
