@@ -1,5 +1,6 @@
 // import {generateTripPoint} from '../mock/point-mock.js';
 import Observable from '../framework/observable.js';
+import {UpdateType} from '../mock/const.js';
 
 export default class TripPointsModel extends Observable {
   #pointsApiService = null;
@@ -20,6 +21,8 @@ export default class TripPointsModel extends Observable {
     } catch(err) {
       this.#points = [];
     }
+
+    this._notify(UpdateType.INIT);
   };
 
   get tripPoints() {

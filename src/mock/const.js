@@ -34,6 +34,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export {CitiesDescription, CitiesToTrip, PointTypes, idArray, SortType, UpdateType, UserAction, FilterType};
