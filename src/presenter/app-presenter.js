@@ -112,6 +112,9 @@ export default class AppPresenter {
         // this.#clearApp();
         this.#renderApp();
         break;
+      case UpdateType.INIT_OFFERS:
+        this.#renderApp();
+        break;
     }
   };
 
