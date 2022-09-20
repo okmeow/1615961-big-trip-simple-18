@@ -115,6 +115,9 @@ export default class AppPresenter {
       case UpdateType.INIT_OFFERS:
         this.#renderApp();
         break;
+      case UpdateType.INIT_DESTINATIONS:
+        this.#renderApp();
+        break;
     }
   };
 
