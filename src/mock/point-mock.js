@@ -1,6 +1,6 @@
 import {getRandomInteger} from '../utils/utils.js';
 import {PointTypes} from './const.js';
-import {nanoid} from 'nanoid';
+// import {nanoid} from 'nanoid';
 import {generateRandomCity} from './destination-city-mock.js';
 
 const generateRandomTransportType = () => {

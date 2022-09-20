@@ -15,9 +15,9 @@ export default class TripPointsModel extends Observable {
   }
 
   get tripPoints() {
-    console.log('С моков', this.#points);
-    console.log('С сервера где нужно', this.#serverPoints);
-    return this.#points;
+    // console.log('С моков', this.#points);
+    // console.log('С сервера где нужно', this.#serverPoints);
+    return this.#serverPoints;
   }
 
   init = async () => {
@@ -27,7 +27,7 @@ export default class TripPointsModel extends Observable {
     } catch(err) {
       this.#serverPoints = [];
     }
-    console.log('С сервера', this.#serverPoints);
+    // console.log('С сервера', this.#serverPoints);
     this._notify(UpdateType.INIT_POINTS);
   };
 

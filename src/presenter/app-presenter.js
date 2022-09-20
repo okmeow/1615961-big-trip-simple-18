@@ -6,6 +6,7 @@ import TripDestinationPointView from '../view/destination-point-view.js';
 import EmptyPointListMessageView from '../view/empty-point-list-message-view.js';
 import SortView from '../view/sort-view.js';
 import ButtonNewEventView from '../view/button-new-event-view.js';
+import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import {sortPointDateUp, sortPointPriceDown, isEscapeKey} from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
@@ -18,6 +19,7 @@ export default class AppPresenter {
   #emptyPointListMessageComponent = null;
   #sortComponent = null;
   #newEventButtonComponent = new ButtonNewEventView();
+  #loadingComponent = new LoadingView();
 
   #fieldContainer = null;
   #destinationCitiesModel = null;
@@ -31,6 +33,7 @@ export default class AppPresenter {
   #pointPresenter = new Map();
   #currentSortType = SortType.DATE;
   #filterType = FilterType.EVERYTHING;
+  #isLoading = true;
 
   constructor (fieldContainer, destinationCitiesModel, tripPointsModel, tripOffersModel, filterModel, changeData) {
     this.#fieldContainer = fieldContainer;
@@ -104,6 +107,9 @@ export default class AppPresenter {
         this.#renderApp();
         break;
       case UpdateType.INIT_POINTS:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        // this.#clearApp();
         this.#renderApp();
         break;
     }
@@ -125,10 +131,14 @@ export default class AppPresenter {
   };
 
   #renderApp = () => {
+    this.#renderCommonWrapper();
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const points = this.points;
     const pointsCount = points.length;
-
-    this.#renderCommonWrapper();
 
     if(pointsCount === 0) {
       return this.#renderNoPointsMessage();
@@ -168,6 +178,10 @@ export default class AppPresenter {
 
   #renderCommonWrapper = () => {
     render(this.#tripContentContainerListComponent, this.#fieldContainer);
+  };
+
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#tripItemComponent.element);
   };
 
   #renderTripItemWrapper = () => {
@@ -213,6 +227,7 @@ export default class AppPresenter {
   #renderNoPointsMessage = () => {
     this.#emptyPointListMessageComponent = new EmptyPointListMessageView(this.#filterType);
     render(this.#emptyPointListMessageComponent, this.#tripContentContainerListComponent.element);
+    remove(this.#loadingComponent);
   };
 
   #replaceCreatePointToPoint = () => {
