@@ -25,16 +25,10 @@ export default class DestinationsApiService extends ApiService {
   };
 
   #adaptToServer = (destination) => {
-    // const adaptedPoint = {...point,
-    //   'base_price': point.price,
-    //   'date_from': point.dateFrom,
-    //   'date_to': point.dateTo,
-    // };
+    const adaptedDestination = {...destination,
 
-    // delete adaptedPoint.price;
-    // delete adaptedPoint.dateFrom;
-    // delete adaptedPoint.dateTo;
+    };
 
-    // return adaptedPoint;
+    return adaptedDestination;
   };
 }

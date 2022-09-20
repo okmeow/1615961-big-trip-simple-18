@@ -16,7 +16,8 @@ export default class CityModel extends Observable {
 
   init = async () => {
     try {
-      this.#serverDestinations = await this.#destinationsApiService.destinations;
+      const serverDestinations = await this.#destinationsApiService.destinations;
+      this.#serverDestinations = serverDestinations.map(this.#adaptToClient);
     } catch(err) {
       this.#serverDestinations = [];
     }
@@ -26,7 +27,7 @@ export default class CityModel extends Observable {
 
 
   get tripCities() {
-    console.log('С сервера где нужно', this.#serverDestinations);
+    // console.log('С сервера где нужно', this.#serverDestinations);
     return this.#destinations;
   }
 
@@ -68,5 +69,12 @@ export default class CityModel extends Observable {
     ];
 
     this._notify(updateType);
+  };
+
+  #adaptToClient = (destination) => {
+    const adaptedDestination = {...destination,
+    };
+
+    return adaptedDestination;
   };
 }
