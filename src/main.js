@@ -28,3 +28,4 @@ render(new ContentContainerView(), siteTripEventsElement);
 
 filterPresenter.init();
 appPresenter.init();
+tripPointsModel.init();
