@@ -103,6 +103,9 @@ export default class AppPresenter {
         this.#clearApp({resetSortType: true});
         this.#renderApp();
         break;
+      case UpdateType.INIT_POINTS:
+        this.#renderApp();
+        break;
     }
   };
 
@@ -127,7 +130,6 @@ export default class AppPresenter {
 
     this.#renderCommonWrapper();
 
-    // if(this.cities.length === 0) {
     if(pointsCount === 0) {
       return this.#renderNoPointsMessage();
     }

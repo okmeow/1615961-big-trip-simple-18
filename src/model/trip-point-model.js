@@ -1,11 +1,12 @@
-// import {generateTripPoint} from '../mock/point-mock.js';
+import {generateTripPoint} from '../mock/point-mock.js';
 import Observable from '../framework/observable.js';
 import {UpdateType} from '../mock/const.js';
 
 export default class TripPointsModel extends Observable {
   #pointsApiService = null;
-  // #points = Array.from({length: 5}, generateTripPoint);
-  #points = [];
+  #points = Array.from({length: 5}, generateTripPoint);
+  // #points = [];
+  #serverPoints = [];
 
 
   constructor(pointsApiService) {
@@ -13,21 +14,22 @@ export default class TripPointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
   }
 
-  init = async () => {
-    try {
-      const points = await this.#pointsApiService.points;
-      this.#points = points.map(this.#adaptToClient);
-      // console.log(this.#points);
-    } catch(err) {
-      this.#points = [];
-    }
-
-    this._notify(UpdateType.INIT);
-  };
-
   get tripPoints() {
+    console.log('С моков', this.#points);
+    console.log('С сервера где нужно', this.#serverPoints);
     return this.#points;
   }
+
+  init = async () => {
+    try {
+      const serverPoints = await this.#pointsApiService.points;
+      this.#serverPoints = serverPoints.map(this.#adaptToClient);
+    } catch(err) {
+      this.#serverPoints = [];
+    }
+    console.log('С сервера', this.#serverPoints);
+    this._notify(UpdateType.INIT_POINTS);
+  };
 
   updatePoint = (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
